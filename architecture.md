@@ -24,7 +24,7 @@ Service Layer
    ├─ UserService
    ├─ PromptService
    ├─ ChatService
-   ├─ AnalyticsService (now ChatMetricService)
+   ├─ AnalyticsService
    │
    └─ ConversationService
          │
@@ -36,7 +36,7 @@ Prisma ORM
    │
 ────────────────────────────────────────────────────
    │
-PostgreSQL Database (Supabase)        Groq API
+PostgreSQL Database        Groq API
 ```
 
 Every component in this architecture has a single responsibility, ensuring that the system remains modular and easy to test.
@@ -50,7 +50,7 @@ The project utilizes a modern JavaScript/TypeScript stack optimized for performa
 | **Frontend** | Next.js (App Router), React (JSX), CSS Modules | Handles UI rendering, state management, and user interactions. |
 | **Backend** | Next.js API Routes, JavaScript | Serves as the API layer, handling requests from the frontend. |
 | **ORM** | Prisma | Manages database schema and provides a type-safe query builder. |
-| **Database** | PostgreSQL (Supabase) | Relational database for storing users, conversations, and messages. |
+| **Database** | PostgreSQL | Relational database for storing users, prompts, conversations, and messages. |
 | **AI Integration** | Groq API | Powers the chatbot's conversational capabilities. |
 | **Deployment** | Vercel | Hosting platform optimized for Next.js applications. |
 
@@ -66,7 +66,7 @@ airis-chatbot/
 ├── services/             # Business logic layer
 ├── lib/                  # Project-wide utilities and clients
 ├── utils/                # Small reusable helper functions
-├── prisma/               # Database schema, migrations, and configuration
+├── prisma/               # Database schema and migrations
 ├── public/               # Static assets
 ├── .env                  # Environment variables
 ├── package.json          # Project dependencies
@@ -83,7 +83,7 @@ API routes map one-to-one to services:
 - `api/prompt/route.js` → `promptService`
 - `api/chat/route.js` → `chatService`
 - `api/conversation/route.js` → `conversationService`
-- `api/analytics/route.js` → `analyticsService` (now `chatMetricService`)
+- `api/analytics/route.js` → `analyticsService`
 
 ### `components/`
 Contains pure UI components: `NameModal`, `Navbar`, `Sidebar`, `PromptEditor`, `ChatWindow`, `MessageBubble`, `ChatInput`, `LoadingSpinner`, `EmptyState`, `ConfirmResetModal`. These components:
@@ -104,7 +104,7 @@ Components should use these hooks rather than writing `fetch` requests directly.
 The core business logic of the application. This is where the actual work happens, separated from the API routing layer.
 
 - **`userService`**: Responsible for creating, finding, and updating users.
-- **`promptService`**: Manages saving, loading, and updating system prompts. In the current simplified design, the `systemPrompt` is stored directly within the `Conversation` entity. When the prompt changes, it triggers the archiving of the current conversation and the creation of a new one.
+- **`promptService`**: Manages saving, loading, and updating system prompts. When a prompt changes, it triggers the archiving of the current conversation and the creation of a new one.
 - **`conversationService`**: Handles creating, retrieving, and archiving conversations.
 - **`messageService`**: Manages saving, loading, and deleting individual messages within a conversation.
 - **`chatService`**: The "brain" of the application. It orchestrates the AI request workflow:
@@ -115,9 +115,9 @@ The core business logic of the application. This is where the actual work happen
   5. Append current message
   6. Call Groq API
   7. Store assistant reply
-  8. Update metrics (via `chatMetricService`)
+  8. Update analytics
   9. Return response
-- **`analyticsService` (now `chatMetricService`)**: Handles statistics such as response time, token usage, and other per-chat metrics. It does not interact with the AI directly.
+- **`analyticsService`**: Handles statistics such as prompt count, message count, latency, daily users, and total chats. It does not interact with the AI.
 
 ### `lib/`
 Contains project-wide utilities that initialize external clients or provide core functionality:
@@ -139,19 +139,23 @@ The database schema is designed around the `Conversation` as the central entity.
 ### Entities
 
 - **User**: `id`, `uuid`, `name`, `createdAt`
-- **Conversation**: `id`, `userId`, `systemPrompt`, `status` (ACTIVE, ARCHIVED), `createdAt`
+- **Prompt**: `id`, `userId`, `content`, `updatedAt`
+- **Conversation**: `id`, `userId`, `promptId`, `status` (ACTIVE, ARCHIVED), `createdAt`
 - **Message**: `id`, `conversationId`, `role` (USER, ASSISTANT), `content`, `createdAt`
-- **ChatMetric** (formerly Analytics): `id`, `conversationId`, `responseTimeMs`, `promptTokens`, `completionTokens`, `totalTokens`, `createdAt`
+- **Analytics**: `id`, `userId`, `messagesSent`, `averageLatency`, `lastSeen`
 
 ### Entity Relationships
 
 ```text
 User
  │
- └── Conversation
-         │
-         ├── Messages
-         └── ChatMetric
+ ├── Prompt
+ │
+ ├── Conversation
+ │      │
+ │      ├── Messages
+ │      ├── Analytics
+ │      └── Feedback (future)
 ```
 
 Instead of thinking "a user has messages," the model is structured as "a user has conversations, and conversations contain messages." This design supports starting a fresh chat whenever the system prompt changes and leaves room for future features like conversation history, exports, retries, and analytics without requiring foundational changes.
@@ -161,7 +165,7 @@ Instead of thinking "a user has messages," the model is structured as "a user ha
 ### Frontend Initialization Flow
 1. Open Website
 2. Check `localStorage` for UUID
-3. If UUID exists: Load User -> Load Active Conversation (including `systemPrompt`) -> Render UI
+3. If UUID exists: Load User -> Load Prompt -> Load Active Conversation -> Render UI
 4. If no UUID: Show Name Modal -> `POST /api/user` -> Generate UUID -> Store UUID -> Continue
 
 ### Chat Flow
@@ -170,16 +174,15 @@ Instead of thinking "a user has messages," the model is structured as "a user ha
 3. Hook sends `POST /api/chat`
 4. API route calls `chatService`
 5. Service calls Groq API
-6. Service saves user and assistant messages to database
-7. Service saves chat metrics to database
-8. Service returns response
-9. Frontend renders `MessageBubble`
+6. Service saves message to database
+7. Service returns response
+8. Frontend renders `MessageBubble`
 
 ### Prompt Update Flow
 1. User edits prompt
 2. 5-second debounce triggers
 3. Hook sends `PUT /api/prompt`
-4. `promptService` updates the `systemPrompt` in the active `Conversation`.
+4. `promptService` updates prompt
 5. Service archives current conversation and creates a new one
 6. Frontend clears chat UI
 
