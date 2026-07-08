@@ -60,14 +60,55 @@ The repository is organized into specific directories, each with a distinct purp
 
 ```text
 airis-chatbot/
-├── app/                  # Next.js App Router (pages, layouts, API routes)
-├── components/           # Pure UI React components
-├── hooks/                # Custom React hooks for frontend logic
-├── services/             # Business logic layer
-├── lib/                  # Project-wide utilities and clients
-├── utils/                # Small reusable helper functions
-├── prisma/               # Database schema and migrations
-├── public/               # Static assets
+├── app/
+│   ├── page.jsx
+│   ├── layout.jsx
+│   ├── globals.css
+│   └── api/
+│       ├── user/
+│       │      route.js
+│       ├── prompt/
+│       │      route.js
+│       ├── chat/
+│       │      route.js
+│       ├── conversation/
+│       │      route.js
+│       └── analytics/
+│              route.js
+├── components/
+│   ├── NameModal.jsx
+│   ├── Navbar.jsx
+│   ├── Sidebar.jsx
+│   ├── PromptEditor.jsx
+│   ├── ChatWindow.jsx
+│   ├── MessageBubble.jsx
+│   ├── ChatInput.jsx
+│   ├── LoadingSpinner.jsx
+│   ├── EmptyState.jsx
+│   └── ConfirmResetModal.jsx
+├── hooks/
+│   ├── useChat.js
+│   ├── usePrompt.js
+│   └── useUser.js
+├── services/
+│   ├── userService.js
+│   ├── promptService.js
+│   ├── conversationService.js
+│   ├── messageService.js
+│   ├── chatService.js
+│   └── analyticsService.js
+├── lib/
+│   ├── prisma.js
+│   ├── groq.js
+│   └── uuid.js
+├── utils/
+│   ├── debounce.js
+│   ├── validators.js
+│   ├── constants.js
+│   └── helpers.js
+├── prisma/
+│   └── schema.prisma
+├── public/
 ├── .env                  # Environment variables
 ├── package.json          # Project dependencies
 └── README.md             # Project documentation
@@ -76,17 +117,29 @@ airis-chatbot/
 ## Responsibility of Every Folder
 
 ### `app/`
-Contains only Next.js specific files: pages, layouts, and API routes. No business logic or complex UI components should reside directly here.
+Contains only Next.js specific files: `page.jsx`, `layout.jsx`, `globals.css`, and API routes under `app/api/`. No business logic or complex UI components should reside directly here.
+
+API routes map one-to-one to services:
+- `api/user/route.js` → `userService`
+- `api/prompt/route.js` → `promptService`
+- `api/chat/route.js` → `chatService`
+- `api/conversation/route.js` → `conversationService`
+- `api/analytics/route.js` → `analyticsService`
 
 ### `components/`
-Contains pure UI components. These components:
+Contains pure UI components: `NameModal`, `Navbar`, `Sidebar`, `PromptEditor`, `ChatWindow`, `MessageBubble`, `ChatInput`, `LoadingSpinner`, `EmptyState`, `ConfirmResetModal`. These components:
 - Never call Prisma directly.
 - Never call the Groq API directly.
 - Never access the database.
 - Only receive props, display UI, and raise events.
 
 ### `hooks/`
-Contains frontend logic and state management. For example, `useChat()` handles sending messages by calling `fetch("/api/chat")`. Components should use these hooks rather than writing `fetch` requests directly.
+Contains frontend logic and state management:
+- `useChat()`: sends messages via `fetch("/api/chat")`.
+- `usePrompt()`: manages prompt editing and debounced saves via `fetch("/api/prompt")`.
+- `useUser()`: manages user identity, UUID lookup, and `fetch("/api/user")`.
+
+Components should use these hooks rather than writing `fetch` requests directly.
 
 ### `services/`
 The core business logic of the application. This is where the actual work happens, separated from the API routing layer.
@@ -114,7 +167,11 @@ Contains project-wide utilities that initialize external clients or provide core
 - `uuid.js`: Handles UUID generation.
 
 ### `utils/`
-Contains small, reusable helper functions that don't depend on external services, such as `debounce()`, `validatePrompt()`, `trimWhitespace()`, and `formatDate()`.
+Contains small, reusable helper functions that don't depend on external services:
+- `debounce.js`: debounce utility used by `usePrompt()` for save delays.
+- `validators.js`: input validation (e.g. `validatePrompt()`, message length checks).
+- `constants.js`: shared constants (max lengths, roles, statuses).
+- `helpers.js`: misc helpers (`trimWhitespace()`, `formatDate()`, etc).
 
 ## Database Design
 

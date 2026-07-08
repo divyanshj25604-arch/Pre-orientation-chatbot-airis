@@ -87,14 +87,55 @@ The application will be accessible at `http://localhost:3000`.
 
 ```text
 airis-chatbot/
-├── app/                  # Next.js App Router (pages, layouts, API routes)
-├── components/           # Pure UI React components
-├── hooks/                # Custom React hooks for frontend logic
-├── services/             # Business logic layer
-├── lib/                  # Project-wide utilities and clients
-├── utils/                # Small reusable helper functions
-├── prisma/               # Database schema and migrations
-├── public/               # Static assets
+├── app/
+│   ├── page.jsx
+│   ├── layout.jsx
+│   ├── globals.css
+│   └── api/
+│       ├── user/
+│       │      route.js
+│       ├── prompt/
+│       │      route.js
+│       ├── chat/
+│       │      route.js
+│       ├── conversation/
+│       │      route.js
+│       └── analytics/
+│              route.js
+├── components/
+│   ├── NameModal.jsx
+│   ├── Navbar.jsx
+│   ├── Sidebar.jsx
+│   ├── PromptEditor.jsx
+│   ├── ChatWindow.jsx
+│   ├── MessageBubble.jsx
+│   ├── ChatInput.jsx
+│   ├── LoadingSpinner.jsx
+│   ├── EmptyState.jsx
+│   └── ConfirmResetModal.jsx
+├── hooks/
+│   ├── useChat.js
+│   ├── usePrompt.js
+│   └── useUser.js
+├── services/
+│   ├── userService.js
+│   ├── promptService.js
+│   ├── conversationService.js
+│   ├── messageService.js
+│   ├── chatService.js
+│   └── analyticsService.js
+├── lib/
+│   ├── prisma.js
+│   ├── groq.js
+│   └── uuid.js
+├── utils/
+│   ├── debounce.js
+│   ├── validators.js
+│   ├── constants.js
+│   └── helpers.js
+├── prisma/
+│   └── schema.prisma
+├── public/
 ├── .env                  # Environment variables (local)
 ├── .env.example          # Example environment variables
 ├── architecture.md       # Detailed project architecture documentation
