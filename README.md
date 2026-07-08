@@ -20,16 +20,24 @@ The project follows a clean, scalable, and maintainable architecture with a clea
 Key architectural principles include:
 -   **Layered Design**: Distinct layers for frontend, API routes, business logic (services), and data access.
 -   **Single Responsibility Principle**: Each component and service is designed to have one specific responsibility.
--   **Conversation-Centric Data Model**: The `Conversation` entity is central to the database design, allowing for robust management of chat interactions and future features.
+-   **Conversation-Centric Data Model**: The `Conversation` entity is central to the database design, allowing for robust management of chat interactions and future features. Notably, the `systemPrompt` is now embedded directly within the `Conversation` model for simplified MVP development.
 
 ## Tech Stack
 
 -   **Frontend**: Next.js (App Router), React (JSX), CSS Modules
 -   **Backend**: Next.js API Routes, JavaScript
 -   **ORM**: Prisma
--   **Database**: PostgreSQL
+-   **Database**: PostgreSQL (Supabase)
 -   **AI Integration**: Groq API
 -   **Deployment**: Vercel
+
+## Current Project Progress
+
+As of July 9, 2026, significant progress has been made on the project:
+
+-   **Backend**: The backend is fully functional, encompassing database design, Prisma configuration, successful connection to Supabase PostgreSQL, and complete implementations of the User, Conversation, and Chat APIs. Groq API integration is verified, messages are persisted, and chat metrics are stored. User UUID persistence is also working.
+-   **Frontend**: Basic page rendering is functional, and the local storage mechanism for user UUIDs has been verified. The core routing for chat (`app/chat/page.jsx`) has been established.
+-   **Documentation**: The `architecture.md` and `context.md` files have been created and updated to reflect the project's design and development journey.
 
 ## Getting Started
 
@@ -58,7 +66,7 @@ Ensure you have the following installed:
 3.  **Environment Variables**:
     Create a `.env` file in the root directory of the project and populate it with your environment variables. Refer to the [`env.example`](./.env.example) file for required variables.
     ```env
-    DATABASE_URL="your_postgresql_database_url"
+    DATABASE_URL="your_supabase_postgresql_database_url"
     GROQ_API_KEY="your_groq_api_key"
     NEXT_PUBLIC_APP_NAME="AIRIS Prompt Lab"
     NEXT_PUBLIC_MAX_PROMPT=3000
@@ -66,7 +74,7 @@ Ensure you have the following installed:
     ```
 
 4.  **Database Setup**:
-    Apply Prisma migrations to set up your PostgreSQL database schema:
+    Apply Prisma migrations to set up your PostgreSQL database schema. Ensure your `DATABASE_URL` in `.env` is correctly configured for Supabase.
     ```bash
     npx prisma migrate dev --name init
     ```
@@ -87,55 +95,14 @@ The application will be accessible at `http://localhost:3000`.
 
 ```text
 airis-chatbot/
-├── app/
-│   ├── page.jsx
-│   ├── layout.jsx
-│   ├── globals.css
-│   └── api/
-│       ├── user/
-│       │      route.js
-│       ├── prompt/
-│       │      route.js
-│       ├── chat/
-│       │      route.js
-│       ├── conversation/
-│       │      route.js
-│       └── analytics/
-│              route.js
-├── components/
-│   ├── NameModal.jsx
-│   ├── Navbar.jsx
-│   ├── Sidebar.jsx
-│   ├── PromptEditor.jsx
-│   ├── ChatWindow.jsx
-│   ├── MessageBubble.jsx
-│   ├── ChatInput.jsx
-│   ├── LoadingSpinner.jsx
-│   ├── EmptyState.jsx
-│   └── ConfirmResetModal.jsx
-├── hooks/
-│   ├── useChat.js
-│   ├── usePrompt.js
-│   └── useUser.js
-├── services/
-│   ├── userService.js
-│   ├── promptService.js
-│   ├── conversationService.js
-│   ├── messageService.js
-│   ├── chatService.js
-│   └── analyticsService.js
-├── lib/
-│   ├── prisma.js
-│   ├── groq.js
-│   └── uuid.js
-├── utils/
-│   ├── debounce.js
-│   ├── validators.js
-│   ├── constants.js
-│   └── helpers.js
-├── prisma/
-│   └── schema.prisma
-├── public/
+├── app/                  # Next.js App Router (pages, layouts, API routes)
+├── components/           # Pure UI React components
+├── hooks/                # Custom React hooks for frontend logic
+├── services/             # Business logic layer
+├── lib/                  # Project-wide utilities and clients
+├── utils/                # Small reusable helper functions
+├── prisma/               # Database schema and migrations
+├── public/               # Static assets
 ├── .env                  # Environment variables (local)
 ├── .env.example          # Example environment variables
 ├── architecture.md       # Detailed project architecture documentation
@@ -146,7 +113,7 @@ airis-chatbot/
 
 ## Contributing
 
-Contributions are welcome! Please refer to the `architecture.md` for a deeper understanding of the project structure and design principles before making changes.
+Contributions are welcome! Please refer to the [`architecture.md`](./architecture.md) and [`context.md`](./context.md) for a deeper understanding of the project structure, design principles, and current development status before making changes.
 
 ## License
 
