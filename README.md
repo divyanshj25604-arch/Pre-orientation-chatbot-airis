@@ -1,36 +1,153 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AIRIS Pre-orientation Chatbot
+
+## Project Overview
+
+The AIRIS Pre-orientation Chatbot is an interactive application designed to assist new students during their pre-orientation phase. It provides a conversational interface to answer common questions, guide users through processes, and offer support, leveraging AI capabilities for dynamic and intelligent responses.
+
+## Features
+
+-   **Interactive Chat Interface**: A user-friendly chat window for seamless communication.
+-   **Dynamic Prompt Management**: Users can customize and manage system prompts to tailor the chatbot's behavior.
+-   **Conversation History**: Stores and retrieves past conversations for continuity.
+-   **Real-time AI Responses**: Integrates with the Groq API for fast and relevant AI-generated replies.
+-   **User Analytics**: Tracks key metrics like message count and latency to monitor usage and performance.
+-   **Scalable Architecture**: Designed for easy expansion with new features and AI models.
+
+## Architecture
+
+The project follows a clean, scalable, and maintainable architecture with a clear separation of concerns. A detailed breakdown of the high-level architecture, tech stack, project structure, folder responsibilities, database design, and data flows can be found in the [`architecture.md`](./architecture.md) file.
+
+Key architectural principles include:
+-   **Layered Design**: Distinct layers for frontend, API routes, business logic (services), and data access.
+-   **Single Responsibility Principle**: Each component and service is designed to have one specific responsibility.
+-   **Conversation-Centric Data Model**: The `Conversation` entity is central to the database design, allowing for robust management of chat interactions and future features.
+
+## Tech Stack
+
+-   **Frontend**: Next.js (App Router), React (JSX), CSS Modules
+-   **Backend**: Next.js API Routes, JavaScript
+-   **ORM**: Prisma
+-   **Database**: PostgreSQL
+-   **AI Integration**: Groq API
+-   **Deployment**: Vercel
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+Ensure you have the following installed:
+-   Node.js (v18 or higher)
+-   npm or Yarn
+-   Git
+
+### Installation
+
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/divyanshj25604-arch/Pre-orientation-chatbot-airis.git
+    cd Pre-orientation-chatbot-airis
+    ```
+
+2.  **Install dependencies**:
+    ```bash
+    npm install
+    # or
+    yarn install
+    ```
+
+3.  **Environment Variables**:
+    Create a `.env` file in the root directory of the project and populate it with your environment variables. Refer to the [`env.example`](./.env.example) file for required variables.
+    ```env
+    DATABASE_URL="your_postgresql_database_url"
+    GROQ_API_KEY="your_groq_api_key"
+    NEXT_PUBLIC_APP_NAME="AIRIS Prompt Lab"
+    NEXT_PUBLIC_MAX_PROMPT=3000
+    NEXT_PUBLIC_MAX_MESSAGE=1000
+    ```
+
+4.  **Database Setup**:
+    Apply Prisma migrations to set up your PostgreSQL database schema:
+    ```bash
+    npx prisma migrate dev --name init
+    ```
+
+### Running the Application
+
+To start the development server:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application will be accessible at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```text
+airis-chatbot/
+├── app/
+│   ├── page.jsx
+│   ├── layout.jsx
+│   ├── globals.css
+│   └── api/
+│       ├── user/
+│       │      route.js
+│       ├── prompt/
+│       │      route.js
+│       ├── chat/
+│       │      route.js
+│       ├── conversation/
+│       │      route.js
+│       └── analytics/
+│              route.js
+├── components/
+│   ├── NameModal.jsx
+│   ├── Navbar.jsx
+│   ├── Sidebar.jsx
+│   ├── PromptEditor.jsx
+│   ├── ChatWindow.jsx
+│   ├── MessageBubble.jsx
+│   ├── ChatInput.jsx
+│   ├── LoadingSpinner.jsx
+│   ├── EmptyState.jsx
+│   └── ConfirmResetModal.jsx
+├── hooks/
+│   ├── useChat.js
+│   ├── usePrompt.js
+│   └── useUser.js
+├── services/
+│   ├── userService.js
+│   ├── promptService.js
+│   ├── conversationService.js
+│   ├── messageService.js
+│   ├── chatService.js
+│   └── analyticsService.js
+├── lib/
+│   ├── prisma.js
+│   ├── groq.js
+│   └── uuid.js
+├── utils/
+│   ├── debounce.js
+│   ├── validators.js
+│   ├── constants.js
+│   └── helpers.js
+├── prisma/
+│   └── schema.prisma
+├── public/
+├── .env                  # Environment variables (local)
+├── .env.example          # Example environment variables
+├── architecture.md       # Detailed project architecture documentation
+├── context.md            # Project context for LLM understanding
+├── package.json          # Project dependencies
+└── README.md             # Project README
+```
 
-## Learn More
+## Contributing
 
-To learn more about Next.js, take a look at the following resources:
+Contributions are welcome! Please refer to the `architecture.md` for a deeper understanding of the project structure and design principles before making changes.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[Specify your license here, e.g., MIT License]
