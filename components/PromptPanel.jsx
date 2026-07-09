@@ -53,8 +53,9 @@ export default function PromptPanel() {
   }, [prompt, saveState]);
 
   return (
-    <div className="w-96 border-r p-4 flex flex-col gap-4">
+    <div className="w-96 border-r border-white p-4 flex flex-col h-full">
 
+      {/* TOP */}
       <div className="grid grid-cols-2 gap-3">
         {personas.map((persona) => (
           <PersonaCard
@@ -69,35 +70,41 @@ export default function PromptPanel() {
         ))}
       </div>
 
-      <div className="flex justify-between items-center">
-        <span className="text-sm font-medium">
-          System Prompt
-        </span>
+      {/* BOTTOM */}
+      <div className="mt-auto flex flex-col gap-3">
 
-        <span className="text-xs text-neutral-400">
-          {saveState === "editing" && "Editing..."}
-          {saveState === "saving" && "Saving..."}
-          {saveState === "saved" && "✓ Saved"}
-        </span>
+        <div className="flex justify-between items-center">
+          <span className="text-sm font-medium">
+            System Prompt
+          </span>
+
+          <span className="text-xs text-neutral-400">
+            {saveState === "editing" && "Editing..."}
+            {saveState === "saving" && "Saving..."}
+            {saveState === "saved" && "✓ Saved"}
+          </span>
+        </div>
+
+        <textarea
+          className="border rounded-lg p-3 h-84 bg-transparent"
+          value={prompt}
+          onChange={(e) => {
+            setPrompt(e.target.value);
+            setSaveState("editing");
+          }}
+          placeholder="Write your system prompt..."
+        />
+
+        <button
+          onClick={() => save(true)}
+          disabled={saving}
+          className="border rounded-lg p-3 disabled:opacity-50"
+        >
+          {saving ? "Saving..." : "Save Prompt"}
+        </button>
+
       </div>
 
-      <textarea
-        className="border rounded-lg p-3 h-64 bg-transparent"
-        value={prompt}
-        onChange={(e) => {
-          setPrompt(e.target.value);
-          setSaveState("editing");
-        }}
-        placeholder="Write your system prompt..."
-      />
-
-      <button
-        onClick={() => save(true)}
-        disabled={saving}
-        className="border rounded-lg p-3 disabled:opacity-50"
-      >
-        {saving ? "Saving..." : "Save Prompt"}
-      </button>
     </div>
   );
 }
