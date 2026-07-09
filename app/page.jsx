@@ -2,10 +2,7 @@
 
 import NameModal from "@/components/NameModal";
 import Navbar from "@/components/Navbar";
-import PromptPanel from "@/components/PromptPanel";
-import PersonaCard from "@/components/PersonaCard";
-import ChatWindow from "@/components/ChatWindow";
-import ChatInput from "@/components/ChatInput";
+import ResponsiveWorkspace from "@/components/ResponsiveWorkspace";
 import { useChat } from "@/hooks/useChat";
 
 import { useUser } from "@/hooks/useUser";
@@ -41,25 +38,11 @@ export default function Home() {
 
       <Navbar />
 
-      <div className="flex h-[calc(100vh-64px)]">
-
-        <PromptPanel />
-
-        <div className="flex flex-col flex-1">
-
-          <ChatWindow
-            messages={messages}
-            loading={chatLoading}
-          />
-
-          <ChatInput
-            onSend={send}
-            loading={chatLoading}
-          />
-
-        </div>
-
-      </div>
+      <ResponsiveWorkspace
+        messages={messages}
+        chatLoading={chatLoading}
+        onSend={send}
+      />
 
     </>
 

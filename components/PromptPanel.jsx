@@ -34,7 +34,11 @@ const personas = [
   },
 ];
 
-export default function PromptPanel() {
+export default function PromptPanel({
+  className = "",
+  onPersonaSelect,
+  ...props
+}) {
   const {
     prompt,
     setPrompt,
@@ -64,7 +68,10 @@ export default function PromptPanel() {
   }, [prompt, saveState]);
 
   return (
-    <div className="w-96 border-r border-white p-4 flex flex-col h-full">
+    <div
+      {...props}
+      className={`w-96 border-r border-white p-4 flex flex-col h-full ${className}`}
+    >
 
       {/* TOP */}
       <div className="grid grid-cols-2 gap-3">
@@ -76,13 +83,14 @@ export default function PromptPanel() {
             onSelect={(newPrompt) => {
               setPrompt(newPrompt);
               setSaveState("editing");
+              onPersonaSelect?.();
             }}
           />
         ))}
       </div>
 
       {/* BOTTOM */}
-      <div className="mt-auto flex flex-col gap-3">
+      <div className="mt-auto mb-28 flex flex-col gap-3 md:mb-0">
 
         <div className="flex justify-between items-center">
           <span className="text-sm font-medium">
@@ -97,7 +105,7 @@ export default function PromptPanel() {
         </div>
 
         <textarea
-          className="border rounded-lg p-3 h-84 bg-transparent"
+          className="border rounded-lg p-3 h-64 bg-transparent md:h-84"
           value={prompt}
           onChange={(e) => {
             setPrompt(e.target.value);
