@@ -36,11 +36,21 @@ export default function MobileWorkspaceTabs({
               aria-controls={`${tab.id}-workspace`}
               onClick={() => onTabChange(tab.id)}
               onKeyDown={(event) => handleKeyDown(event, tab.id)}
-              className={`rounded-md px-3 py-2 text-sm font-medium transition ${
-                isActive
+              className={`
+                rounded-md px-3 py-2 text-sm font-medium transition
+
+                outline-none
+                focus:outline-none
+                focus:ring-0
+                focus:ring-transparent
+                focus-visible:outline-none
+                focus-visible:ring-0
+                focus-visible:ring-transparent
+
+                ${isActive
                   ? "bg-white text-black"
-                  : "text-neutral-300 hover:bg-white/10"
-              }`}
+                  : "text-neutral-300 hover:bg-white/10"}
+                `}
             >
               {tab.label}
             </button>
