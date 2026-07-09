@@ -1,4 +1,7 @@
 export async function sendMessage(conversationId, message) {
+
+  const apiKey = localStorage.getItem("groqApiKey");
+
   const response = await fetch("/api/chat", {
     method: "POST",
     headers: {
@@ -7,6 +10,7 @@ export async function sendMessage(conversationId, message) {
     body: JSON.stringify({
       conversationId,
       message,
+      apiKey,
     }),
   });
 
