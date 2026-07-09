@@ -36,7 +36,21 @@ export default function ChatInput({
                     }
                 }}
                 placeholder="Ask AIRIS anything..."
-                className="flex-1 border rounded-lg bg-transparent px-4 py-3"
+                className="
+                    flex-1
+                    rounded-lg
+                    border
+                    border-white
+                    bg-transparent
+                    px-4
+                    py-3
+                    outline-none
+                    ring-0
+                    focus:ring-0
+                    focus-visible:ring-0
+                    focus:outline-none
+                    focus:border-blue-500
+                "
             />
 
             <button

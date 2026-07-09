@@ -49,6 +49,7 @@ export default function Home() {
 
           <ChatWindow
             messages={messages}
+            loading={chatLoading}
           />
 
           <ChatInput

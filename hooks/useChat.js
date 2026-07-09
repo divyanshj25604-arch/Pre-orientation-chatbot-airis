@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { sendMessage} from "@/services/chatService";
+import { sendMessage } from "@/services/chatService";
 import { getMessages } from "@/services/messageService";
 
 export function useChat() {
@@ -51,6 +51,11 @@ export function useChat() {
         setMessages((prev) => [...prev, userMessage]);
 
         try {
+            await new Promise((resolve) =>
+
+                setTimeout(resolve, 3000)
+
+            );
             const data = await sendMessage(
                 conversationId,
                 text
