@@ -49,7 +49,8 @@ export default function ChatInput({
                     border-white
                     bg-transparent
                     px-4
-                    py-3
+                    py-2
+                    h-14
                     outline-none
                     ring-0
                     focus:ring-0
@@ -61,7 +62,7 @@ export default function ChatInput({
 
             <button
                 disabled={loading}
-                className="border rounded-lg px-6 disabled:opacity-50"
+                className="border rounded-lg px-6 h-14 disabled:opacity-50"
             >
                 {loading ? "Thinking..." : "Send"}
             </button>
