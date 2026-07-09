@@ -4,7 +4,7 @@ import PersonaCard from "./PersonaCard";
 import { usePrompt } from "@/hooks/usePrompt";
 import { useEffect } from "react";
 import { AUTO_SAVE_DELAY } from "@/utils/constants";
-import { isValidPrompt } from "@/utils/validators";
+import { isPromptEmpty, isPromptTooLong } from "@/utils/validators";
 import { toast } from "sonner";
 
 const personas = [
@@ -34,7 +34,12 @@ const personas = [
   },
 ];
 
-export default function PromptPanel() {
+export default function PromptPanel({
+  className = "",
+  onPersonaSelect,
+  onPromptSaved,
+  ...props
+}) {
   const {
     prompt,
     setPrompt,
@@ -64,31 +69,29 @@ export default function PromptPanel() {
   }, [prompt, saveState]);
 
   return (
-    <div className="w-96 border-r border-white p-4 flex flex-col h-full">
-
-      {/* TOP */}
-      <div className="grid grid-cols-2 gap-3">
-        {personas.map((persona) => (
-          <PersonaCard
-            key={persona.title}
-            title={persona.title}
-            prompt={persona.prompt}
-            onSelect={(newPrompt) => {
-              setPrompt(newPrompt);
-              setSaveState("editing");
-            }}
-          />
-        ))}
+    <div
+      {...props}
+      className={`w-96 h-full flex flex-col border-r border-white p-4 ${className}`}
+    >
+      <div className="flex-1 overflow-y-auto min-h-0">
+        <div className="grid grid-cols-2 gap-2 md:gap-3">
+          {personas.map((persona) => (
+            <PersonaCard
+              key={persona.title}
+              title={persona.title}
+              prompt={persona.prompt}
+              onSelect={(newPrompt) => {
+                setPrompt(newPrompt);
+                setSaveState("editing");
+              }}
+            />
+          ))}
+        </div>
       </div>
 
-      {/* BOTTOM */}
-      <div className="mt-auto flex flex-col gap-3">
-
+      <div className="flex flex-col gap-3 pt-3 shrink-0">
         <div className="flex justify-between items-center">
-          <span className="text-sm font-medium">
-            System Prompt
-          </span>
-
+          <span className="text-sm font-medium">System Prompt</span>
           <span className="text-xs text-neutral-400">
             {saveState === "editing" && "Editing..."}
             {saveState === "saving" && "Saving..."}
@@ -97,7 +100,7 @@ export default function PromptPanel() {
         </div>
 
         <textarea
-          className="border rounded-lg p-3 h-84 bg-transparent"
+          className="border rounded-lg p-3 bg-transparent h-56 md:h-96 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"
           value={prompt}
           onChange={(e) => {
             setPrompt(e.target.value);
@@ -107,7 +110,7 @@ export default function PromptPanel() {
         />
 
         <button
-          onClick={() => {
+          onClick={async () => {
             if (isPromptEmpty(prompt)) {
               toast.error("Prompt cannot be empty");
               return;
@@ -116,17 +119,15 @@ export default function PromptPanel() {
               toast.error("Prompt exceeds 3000 characters");
               return;
             }
-
-            save(true);
+            await save(true);
+            onPromptSaved?.();
           }}
           disabled={saving}
           className="border rounded-lg p-3 disabled:opacity-50"
         >
           {saving ? "Saving..." : "Save Prompt"}
         </button>
-
       </div>
-
     </div>
   );
 }

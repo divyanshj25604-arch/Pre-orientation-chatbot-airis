@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { isValidMessage } from "@/utils/validators";
+import { toast } from "sonner";
 
 export default function ChatInput({
     onSend,
     loading,
+    className = "",
 }) {
     const [text, setText] = useState("");
 
@@ -29,7 +31,7 @@ export default function ChatInput({
     return (
         <form
             onSubmit={handleSubmit}
-            className="border-t p-4 flex gap-3"
+            className={`border-t p-4 flex gap-3 ${className}`}
         >
             <input
                 value={text}
