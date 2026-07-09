@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { isValidMessage } from "@/utils/validators";
 
 export default function ChatInput({
     onSend,
@@ -13,7 +14,10 @@ export default function ChatInput({
 
         if (loading) return;
 
-        if (!text.trim()) return;
+        if (!isValidMessage(text)) {
+            toast.error("Invalid message");
+            return;
+        }
 
         const message = text;
 

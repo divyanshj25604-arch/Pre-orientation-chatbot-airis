@@ -3,6 +3,9 @@
 import PersonaCard from "./PersonaCard";
 import { usePrompt } from "@/hooks/usePrompt";
 import { useEffect } from "react";
+import { AUTO_SAVE_DELAY } from "@/utils/constants";
+import { isValidPrompt } from "@/utils/validators";
+import { toast } from "sonner";
 
 const personas = [
   {
@@ -45,8 +48,16 @@ export default function PromptPanel() {
     if (saveState !== "editing") return;
 
     const timer = setTimeout(() => {
+      if (isPromptEmpty(prompt)) {
+        toast.error("Prompt cannot be empty");
+        return;
+      }
+      if (isPromptTooLong(prompt)) {
+        toast.error("Prompt exceeds 3000 characters");
+        return;
+      }
       save();
-    }, 5000);
+    }, AUTO_SAVE_DELAY);
 
     return () => clearTimeout(timer);
 
@@ -96,7 +107,18 @@ export default function PromptPanel() {
         />
 
         <button
-          onClick={() => save(true)}
+          onClick={() => {
+            if (isPromptEmpty(prompt)) {
+              toast.error("Prompt cannot be empty");
+              return;
+            }
+            if (isPromptTooLong(prompt)) {
+              toast.error("Prompt exceeds 3000 characters");
+              return;
+            }
+
+            save(true);
+          }}
           disabled={saving}
           className="border rounded-lg p-3 disabled:opacity-50"
         >

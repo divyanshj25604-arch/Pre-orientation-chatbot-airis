@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { isValidGroqKey } from "@/utils/validators";
 
 export default function ApiKeyModal({
     open,
@@ -23,19 +24,14 @@ export default function ApiKeyModal({
     if (!open) return null;
 
     function handleSave() {
-        const key = apiKey.trim();
-
-        if (!key) {
-            toast.error("Please enter a Groq API key.");
+        if (!isValidGroqKey(apiKey)) {
+            toast.error("Invalid Groq API key");
             return;
         }
 
-        if (!/^gsk_[A-Za-z0-9_-]{20,}$/.test(key)) {
-            toast.error("Invalid Groq API key.");
-            return;
-        }
+        onClose();
 
-        onSave(key);
+        onSave(apiKey);
     }
 
     return (
