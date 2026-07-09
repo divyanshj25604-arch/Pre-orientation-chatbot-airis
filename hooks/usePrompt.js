@@ -3,62 +3,69 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
-  savePrompt,
-  getPrompt,
+    savePrompt,
+    getPrompt,
 } from "@/services/promptService";
 
 export function usePrompt() {
-  const [prompt, setPrompt] = useState("");
-  const [saving, setSaving] = useState(false);
+    const [prompt, setPrompt] = useState("");
+    const [saveState, setSaveState] = useState("saved");
+    // "editing" | "saving" | "saved"
 
-  useEffect(() => {
-    loadPrompt();
-  }, []);
+    const saving = saveState === "saving";
 
-  async function loadPrompt() {
-    const conversationId = Number(
-      localStorage.getItem("conversationId")
-    );
+    useEffect(() => {
+        loadPrompt();
+    }, []);
 
-    if (!conversationId) return;
+    async function loadPrompt() {
+        const conversationId = Number(
+            localStorage.getItem("conversationId")
+        );
 
-    try {
-      const data = await getPrompt(
-        conversationId
-      );
+        if (!conversationId) return;
 
-      setPrompt(data.systemPrompt ?? "");
-    } catch (err) {
-      console.error(err);
+        try {
+            const data = await getPrompt(
+                conversationId
+            );
+
+            setPrompt(data.systemPrompt ?? "");
+        } catch (err) {
+            console.error(err);
+        }
     }
-  }
 
-  async function save() {
-    const conversationId = Number(
-      localStorage.getItem("conversationId")
-    );
+    async function save(showToast = false) {
+        const conversationId = Number(
+            localStorage.getItem("conversationId")
+        );
 
-    try {
-      setSaving(true);
+        try {
+            setSaveState("saving");
 
-      await savePrompt(
-        conversationId,
-        prompt
-      );
+            await savePrompt(conversationId, prompt);
 
-      toast.success("Prompt saved");
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to save prompt");
-    } finally {
-      setSaving(false);
+            setSaveState("saved");
+
+            if (showToast) {
+                toast.success("Prompt saved");
+            }
+        } catch (err) {
+            console.error(err);
+
+            setSaveState("editing");
+
+            toast.error("Failed to save prompt");
+        }
     }
-  }
 
-  return {
-    prompt,
-    setPrompt,
-    save,
-    saving,
-  };
+    return {
+        prompt,
+        setPrompt,
+        save,
+        saveState,
+        setSaveState,
+        saving,
+    };
 }
