@@ -1,36 +1,66 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import NameModal from "@/components/NameModal";
+import Navbar from "@/components/Navbar";
+import PromptPanel from "@/components/PromptPanel";
+import PersonaCard from "@/components/PersonaCard";
+import ChatWindow from "@/components/ChatWindow";
+import ChatInput from "@/components/ChatInput";
+import { useChat } from "@/hooks/useChat";
+
+import { useUser } from "@/hooks/useUser";
 
 export default function Home() {
-  const [user, setUser] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const {
+    user,
+    loading,
+    createUser,
+  } = useUser();
 
-  useEffect(() => {
-    const uuid = localStorage.getItem("uuid");
+  const {
+    messages,
+    loading: chatLoading,
+    send,
+  } = useChat();
 
-    if (!uuid) {
-      setShowModal(true);
-    }
-  }, []);
+  if (loading) {
+    return null;
+  }
+
+  if (!user) {
+    return (
+      <NameModal
+        onUserCreated={createUser}
+      />
+    );
+  }
 
   return (
-    <>
-      {showModal && (
-        <NameModal
-          onUserCreated={(user) => {
-            setUser(user);
-            setShowModal(false);
-          }}
-        />
-      )}
 
-      <main className="min-h-screen bg-black text-white flex items-center justify-center">
-        <h1 className="text-5xl font-bold">
-          AIRIS Prompt Lab
-        </h1>
-      </main>
+    <>
+
+      <Navbar />
+
+      <div className="flex h-[calc(100vh-64px)]">
+
+        <PromptPanel />
+
+        <div className="flex flex-col flex-1">
+
+          <ChatWindow
+            messages={messages}
+          />
+
+          <ChatInput
+            onSend={send}
+            loading={chatLoading}
+          />
+
+        </div>
+
+      </div>
+
     </>
+
   );
 }

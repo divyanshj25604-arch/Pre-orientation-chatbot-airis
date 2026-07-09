@@ -1,26 +1,10 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import Groq from "groq-sdk";
-
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
-});
+import { groq } from "@/lib/groq";
 
 export async function POST(request) {
   try {
-    const { uuid, conversationId, message } = await request.json();
-
-    // Find user
-    const user = await prisma.user.findUnique({
-      where: { uuid },
-    });
-
-    if (!user) {
-      return NextResponse.json(
-        { error: "User not found" },
-        { status: 404 }
-      );
-    }
+    const {conversationId, message } = await request.json();
 
     // Find conversation
     const conversation = await prisma.conversation.findUnique({
@@ -111,4 +95,23 @@ export async function POST(request) {
       { status: 500 }
     );
   }
+}
+
+export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+
+  const conversationId = Number(
+    searchParams.get("conversationId")
+  );
+
+  const messages = await prisma.message.findMany({
+    where: {
+      conversationId,
+    },
+    orderBy: {
+      createdAt: "asc",
+    },
+  });
+
+  return NextResponse.json(messages);
 }

@@ -32,3 +32,40 @@ export async function POST(req) {
     );
   }
 }
+
+export async function GET(req) {
+  try {
+    const { searchParams } = new URL(req.url);
+
+    const uuid = searchParams.get("uuid");
+
+    if (!uuid) {
+      return NextResponse.json(
+        { error: "UUID required" },
+        { status: 400 }
+      );
+    }
+
+    const user = await prisma.user.findUnique({
+      where: {
+        uuid,
+      },
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "User not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(user);
+  } catch (err) {
+    console.error(err);
+
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
