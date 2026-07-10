@@ -34,7 +34,7 @@ export default function ResponsiveWorkspace({
         id="chat-workspace"
         role="tabpanel"
         aria-labelledby="chat-tab"
-        className={`min-h-0 flex-col pb-28 md:col-start-2 md:row-start-1 md:flex md:pb-0 ${activeMobileTab === "chat" ? "flex" : "hidden"
+        className={`min-h-0 flex-col md:col-start-2 md:row-start-1 md:flex md:pb-0 ${activeMobileTab === "chat" ? "flex" : "hidden"
           }`}
       >
         <ChatWindow
@@ -46,7 +46,7 @@ export default function ResponsiveWorkspace({
       <div
         className={`
           ${activeMobileTab === "chat" ? "block" : "hidden"}
-          md:block
+          md:contents
         `}
       >
         <ChatInput
