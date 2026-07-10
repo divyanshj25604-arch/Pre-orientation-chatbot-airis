@@ -14,11 +14,11 @@ export default function ResponsiveWorkspace({
   const [activeMobileTab, setActiveMobileTab] = useState("chat");
 
   return (
-    // ResponsiveWorkspace.jsx
-    <div className="grid h-[calc(100dvh-64px)] grid-rows-[auto_minmax(0,1fr)] overflow-hidden md:h-[calc(100vh-64px)] md:grid-cols-[24rem_minmax(0,1fr)] md:grid-rows-[minmax(0,1fr)_auto]">      <MobileWorkspaceTabs
-      activeTab={activeMobileTab}
-      onTabChange={setActiveMobileTab}
-    />
+    <div className="grid min-h-0 flex-1 grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden md:h-[calc(100vh-64px)] md:flex-none md:grid-cols-[24rem_minmax(0,1fr)] md:grid-rows-[minmax(0,1fr)_auto]">
+      <MobileWorkspaceTabs
+        activeTab={activeMobileTab}
+        onTabChange={setActiveMobileTab}
+      />
 
       <PromptPanel
         id="prompt-workspace"
@@ -26,7 +26,7 @@ export default function ResponsiveWorkspace({
         aria-labelledby="prompt-tab"
         onPersonaSelect={() => setActiveMobileTab("chat")}
         onPromptSaved={() => setActiveMobileTab("chat")}
-        className={`min-h-0 w-full overflow-y-auto border-r-0 pb-20 md:col-start-1 md:row-span-2 md:flex md:w-full md:border-r md:pb-4 ${activeMobileTab === "prompt" ? "flex" : "hidden"
+        className={`min-h-0 w-full overflow-y-auto overscroll-contain border-r-0 md:col-start-1 md:row-span-2 md:flex md:w-full md:border-r md:pb-4 ${activeMobileTab === "prompt" ? "block" : "hidden"
           }`}
       />
 
@@ -46,15 +46,13 @@ export default function ResponsiveWorkspace({
       <div
         className={`
           ${activeMobileTab === "chat" ? "block" : "hidden"}
-          md:contents
+          min-h-0 md:contents
         `}
       >
         <ChatInput
           onSend={onSend}
           loading={chatLoading}
-          className="fixed inset-x-0 bottom-0 z-10 bg-background h-20
-             pb-[env(safe-area-inset-bottom)]
-             md:static md:inset-auto md:z-auto md:bg-transparent md:h-auto md:pb-4"
+          className="bg-background pb-[env(safe-area-inset-bottom)] md:pb-4"
         />
       </div>
     </div>

@@ -2,7 +2,8 @@
 
 import PersonaCard from "./PersonaCard";
 import { usePrompt } from "@/hooks/usePrompt";
-import { useEffect } from "react";
+import { useAutoResizeTextarea } from "@/hooks/useAutoResizeTextarea";
+import { useEffect, useState } from "react";
 import { AUTO_SAVE_DELAY } from "@/utils/constants";
 import { isPromptEmpty, isPromptTooLong } from "@/utils/validators";
 import { toast } from "sonner";
@@ -48,6 +49,20 @@ export default function PromptPanel({
     setSaveState,
     saving,
   } = usePrompt();
+  const [isMobile, setIsMobile] = useState(false);
+  const textareaRef = useAutoResizeTextarea({
+    value: prompt,
+    enabled: isMobile,
+  });
+
+  useEffect(() => {
+    const mobileQuery = window.matchMedia("(max-width: 767px)");
+    const updateViewport = () => setIsMobile(mobileQuery.matches);
+
+    updateViewport();
+    mobileQuery.addEventListener("change", updateViewport);
+    return () => mobileQuery.removeEventListener("change", updateViewport);
+  }, []);
 
   useEffect(() => {
     if (saveState !== "editing") return;
@@ -71,25 +86,23 @@ export default function PromptPanel({
   return (
     <div
       {...props}
-      className={`w-96 h-full flex flex-col border-r border-white p-4 ${className}`}
+      className={`w-full p-4 md:w-96 md:h-full md:flex md:flex-col md:border-r md:border-white ${className}`}
     >
-      <div className="flex-1 overflow-y-auto min-h-0">
-        <div className="grid grid-cols-2 gap-2 md:gap-3">
-          {personas.map((persona) => (
-            <PersonaCard
-              key={persona.title}
-              title={persona.title}
-              prompt={persona.prompt}
-              onSelect={(newPrompt) => {
-                setPrompt(newPrompt);
-                setSaveState("editing");
-              }}
-            />
-          ))}
-        </div>
+      <div className="grid grid-cols-2 gap-2 md:min-h-0 md:flex-1 md:overflow-y-auto md:gap-3">
+        {personas.map((persona) => (
+          <PersonaCard
+            key={persona.title}
+            title={persona.title}
+            prompt={persona.prompt}
+            onSelect={(newPrompt) => {
+              setPrompt(newPrompt);
+              setSaveState("editing");
+            }}
+          />
+        ))}
       </div>
 
-      <div className="flex flex-col gap-3 pt-3 shrink-0">
+      <div className="mt-3 flex flex-col gap-3 md:shrink-0">
         <div className="flex justify-between items-center">
           <span className="text-sm font-medium">System Prompt</span>
           <span className="text-xs text-neutral-400">
@@ -100,7 +113,8 @@ export default function PromptPanel({
         </div>
 
         <textarea
-          className="border rounded-lg p-3 bg-transparent h-56 md:h-96 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"
+          ref={textareaRef}
+          className="min-h-32 max-h-[50dvh] resize-none overflow-y-auto rounded-lg border bg-transparent p-3 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 md:h-96 md:max-h-none"
           value={prompt}
           onChange={(e) => {
             setPrompt(e.target.value);
