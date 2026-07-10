@@ -50,6 +50,7 @@ export function useUser() {
         const user = await userRes.json();
 
         localStorage.setItem("uuid", user.uuid);
+        localStorage.setItem("userName", data.name);
 
         // Create Conversation
         const conversationRes = await fetch("/api/conversation", {

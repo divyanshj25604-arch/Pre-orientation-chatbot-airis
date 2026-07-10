@@ -29,6 +29,7 @@ export function useChat() {
                             ? "user"
                             : "assistant",
                     content: msg.content,
+                    timestamp: new Date().toISOString(),
                 }))
             );
         } catch (err) {
@@ -46,6 +47,7 @@ export function useChat() {
         const userMessage = {
             role: "user",
             content: text,
+            timestamp: new Date().toISOString(),
         };
 
         setMessages((prev) => [...prev, userMessage]);
@@ -66,6 +68,7 @@ export function useChat() {
                 {
                     role: "assistant",
                     content: data.reply,
+                    timestamp: new Date().toISOString(),
                 },
             ]);
         } finally {
