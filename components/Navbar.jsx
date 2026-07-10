@@ -7,7 +7,7 @@ export default function Navbar() {
     const [showApiModal, setShowApiModal] = useState(false);
     return (
         <>
-            <div className="flex items-center justify-between h-16 border-b border-white px-6">
+            <div className="flex h-16 shrink-0 items-center justify-between border-b border-white px-6">
 
                 <h1 className="text-lg font-semibold">
                     AIRIS Prompt Lab

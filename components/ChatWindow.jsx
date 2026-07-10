@@ -12,7 +12,7 @@ export default function ChatWindow({
         return <EmptyState />;
     }
     return (
-        <div className="flex-1 overflow-y-auto p-6 space-y-4">
+        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain p-6">
 
             {messages.map((message, index) => (
                 <MessageBubble
