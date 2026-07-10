@@ -1,16 +1,27 @@
 "use client";
 
 export default function MessageBubble({ message }) {
-  const isUser = message.role === "user";
+    const isUser = message.role === "user";
 
-  return (
-    <div
-      className={`flex min-w-0 ${
-        isUser ? "justify-end" : "justify-start"
-      }`}
-    >
-      <div
-        className="
+    const time = message.timestamp
+        ? new Date(message.timestamp).toLocaleTimeString([], {
+            hour: "numeric",
+            minute: "2-digit",
+        })
+        : "";
+
+    const userName =
+        typeof window !== "undefined"
+            ? localStorage.getItem("userName") || "You"
+            : "You";
+
+    return (
+        <div
+            className={`flex min-w-0 ${isUser ? "justify-end" : "justify-start"
+                }`}
+        >
+            <div
+                className="
           min-w-0
           max-w-full
           md:max-w-2xl
@@ -22,9 +33,12 @@ export default function MessageBubble({ message }) {
           whitespace-pre-wrap
           break-words
         "
-      >
-        {message.content}
-      </div>
-    </div>
-  );
+            >
+                <p>{message.content}</p>
+                <p className="mt-2 text-[11px] text-white/50">
+                    {isUser ? userName : "System"} • {time}
+                </p>
+            </div>
+        </div>
+    );
 }

@@ -3,11 +3,18 @@
 import MessageBubble from "./MessageBubble";
 import LoadingSpinner from "./LoadingSpinner";
 import EmptyState from "./EmptyState";
+import { useEffect, useRef } from "react";
 
 export default function ChatWindow({
     messages,
     loading,
 }) {
+    const bottomRef = useRef(null);
+    useEffect(() => {
+        bottomRef.current?.scrollIntoView({
+            behavior: "smooth",
+        });
+    }, [messages, loading]);
     if (messages.length === 0 && !loading) {
         return <EmptyState />;
     }
@@ -21,6 +28,7 @@ export default function ChatWindow({
                 />
             ))}
             {loading && <LoadingSpinner />}
+            <div ref={bottomRef} />
         </div>
     );
 }
