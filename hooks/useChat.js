@@ -1,19 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { sendMessage } from "@/services/chatService";
+import { useState, useEffect, useCallback } from "react";
+import { clearMessages, sendMessage } from "@/services/chatService";
 import { getMessages } from "@/services/messageService";
 import { toast } from "sonner";
 
 export function useChat() {
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [clearing, setClearing] = useState(false);
 
-    useEffect(() => {
-        loadMessages();
-    }, []);
-
-    async function loadMessages() {
+    const loadMessages = useCallback(async () => {
         const conversationId = Number(
             localStorage.getItem("conversationId")
         );
@@ -36,7 +33,11 @@ export function useChat() {
         } catch (err) {
             console.error(err);
         }
-    }
+    }, []);
+
+    useEffect(() => {
+        loadMessages();
+    }, [loadMessages]);
 
     async function send(text) {
         setLoading(true);
@@ -85,9 +86,33 @@ export function useChat() {
         }
     }
 
+    async function clear() {
+        const conversationId = Number(
+            localStorage.getItem("conversationId")
+        );
+
+        if (!conversationId) return;
+
+        setClearing(true);
+
+        try {
+            await clearMessages(conversationId);
+            setMessages([]);
+            toast.success("Chat cleared");
+        } catch (err) {
+            console.error(err);
+            toast.error("Failed to clear chat");
+            throw err;
+        } finally {
+            setClearing(false);
+        }
+    }
+
     return {
         messages,
         loading,
         send,
+        clear,
+        clearing,
     };
 }

@@ -44,7 +44,12 @@ export async function POST(request) {
 
         // Fetch previous messages
         const messages = await prisma.message.findMany({
-            where: { conversationId },
+            where: {
+                conversationId,
+                ...(conversation.contextStartedAt
+                    ? { createdAt: { gte: conversation.contextStartedAt } }
+                    : {}),
+            },
             orderBy: {
                 createdAt: "asc",
             },
@@ -134,4 +139,31 @@ export async function GET(request) {
     });
 
     return NextResponse.json(messages);
+}
+
+export async function DELETE(request) {
+    try {
+        const { searchParams } = new URL(request.url);
+        const conversationId = Number(searchParams.get("conversationId"));
+
+        if (!Number.isInteger(conversationId) || conversationId <= 0) {
+            return NextResponse.json(
+                { error: "A valid conversation is required" },
+                { status: 400 }
+            );
+        }
+
+        const result = await prisma.message.deleteMany({
+            where: { conversationId },
+        });
+
+        return NextResponse.json({ deleted: result.count });
+    } catch (error) {
+        console.error(error);
+
+        return NextResponse.json(
+            { error: "Failed to clear chat" },
+            { status: 500 }
+        );
+    }
 }
