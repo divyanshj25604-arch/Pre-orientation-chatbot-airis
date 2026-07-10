@@ -3,13 +3,6 @@
 export default function MessageBubble({ message }) {
     const isUser = message.role === "user";
 
-    const time = message.timestamp
-        ? new Date(message.timestamp).toLocaleTimeString([], {
-            hour: "numeric",
-            minute: "2-digit",
-        })
-        : "";
-
     const userName =
         typeof window !== "undefined"
             ? localStorage.getItem("userName") || "You"
@@ -36,7 +29,9 @@ export default function MessageBubble({ message }) {
             >
                 <p>{message.content}</p>
                 <p className="mt-2 text-[11px] text-white/50">
-                    {isUser ? userName : "System"} • {time}
+                    {isUser
+                        ? (localStorage.getItem("userName") || "You")
+                        : "AIRIS • Assistant"}
                 </p>
             </div>
         </div>
