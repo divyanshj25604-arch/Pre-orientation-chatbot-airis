@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import backendSystemPrompt from "@/lib/backendSystemPrompt";
 import prisma from "@/lib/prisma";
 import Groq from "groq-sdk";
 
@@ -58,12 +59,15 @@ export async function POST(request) {
         // Build chat history
         const chatHistory = [];
 
-        if (conversation.systemPrompt.trim() !== "") {
-            chatHistory.push({
-                role: "system",
-                content: conversation.systemPrompt,
-            });
-        }
+        const finalSystemPrompt = `
+            ${conversation.systemPrompt.trim()}
+            ${backendSystemPrompt}
+        `.trim();
+
+        chatHistory.push({
+            role: "system",
+            content: finalSystemPrompt,
+        });
 
         messages.forEach((msg) => {
             chatHistory.push({
@@ -81,7 +85,7 @@ export async function POST(request) {
         });
 
         const completion = await groq.chat.completions.create({
-            model: "llama-3.3-70b-versatile",
+            model: "openai/gpt-oss-120b",
             messages: chatHistory,
         });
 
