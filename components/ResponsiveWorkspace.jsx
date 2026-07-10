@@ -11,6 +11,8 @@ export default function ResponsiveWorkspace({
   messages,
   chatLoading,
   onSend,
+  onClear,
+  clearing,
 }) {
   const [activeMobileTab, setActiveMobileTab] = useState("chat");
   const { hasPrompt } = usePromptContext();
@@ -42,6 +44,8 @@ export default function ResponsiveWorkspace({
         <ChatWindow
           messages={messages}
           loading={chatLoading}
+          onClear={onClear}
+          clearing={clearing}
         />
       </div>
 

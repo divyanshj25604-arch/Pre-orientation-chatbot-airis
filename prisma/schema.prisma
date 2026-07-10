@@ -16,14 +16,15 @@ model User {
 }
 
 model Conversation {
-  id           Int                @id @default(autoincrement())
-  systemPrompt String
-  status       ConversationStatus @default(ACTIVE)
-  createdAt    DateTime           @default(now())
-  userId       Int
-  chatMetrics  ChatMetric[]
-  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  messages     Message[]
+  id               Int                @id @default(autoincrement())
+  systemPrompt     String
+  contextStartedAt DateTime?
+  status           ConversationStatus @default(ACTIVE)
+  createdAt        DateTime           @default(now())
+  userId           Int
+  chatMetrics      ChatMetric[]
+  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages         Message[]
 }
 
 model Message {

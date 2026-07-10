@@ -18,6 +18,8 @@ export default function Home() {
     messages,
     loading: chatLoading,
     send,
+    clear,
+    clearing,
   } = useChat();
 
   if (loading) {
@@ -42,6 +44,8 @@ export default function Home() {
         messages={messages}
         chatLoading={chatLoading}
         onSend={send}
+        onClear={clear}
+        clearing={clearing}
       />
 
     </PromptProvider>
