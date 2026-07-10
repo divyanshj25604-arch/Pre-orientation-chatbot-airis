@@ -2,7 +2,8 @@
 
 import PersonaCard from "./PersonaCard";
 import { usePrompt } from "@/hooks/usePrompt";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useAutoResizeTextarea } from "@/hooks/useAutoResizeTextarea";
+import { useEffect, useState } from "react";
 import { AUTO_SAVE_DELAY } from "@/utils/constants";
 import { isPromptEmpty, isPromptTooLong } from "@/utils/validators";
 import { toast } from "sonner";
@@ -48,8 +49,11 @@ export default function PromptPanel({
     setSaveState,
     saving,
   } = usePrompt();
-  const textareaRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
+  const textareaRef = useAutoResizeTextarea({
+    value: prompt,
+    enabled: isMobile,
+  });
 
   useEffect(() => {
     const mobileQuery = window.matchMedia("(max-width: 767px)");
@@ -59,14 +63,6 @@ export default function PromptPanel({
     mobileQuery.addEventListener("change", updateViewport);
     return () => mobileQuery.removeEventListener("change", updateViewport);
   }, []);
-
-  useLayoutEffect(() => {
-    const textarea = textareaRef.current;
-    if (!textarea || !isMobile) return;
-
-    textarea.style.height = "auto";
-    textarea.style.height = `${textarea.scrollHeight}px`;
-  }, [prompt, isMobile]);
 
   useEffect(() => {
     if (saveState !== "editing") return;
