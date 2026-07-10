@@ -31,7 +31,7 @@ export default function ChatInput({
     return (
         <form
             onSubmit={handleSubmit}
-            className={`border-t p-4 flex gap-3 ${className}`}
+            className={`flex w-full min-w-0 shrink-0 gap-3 border-t p-4 ${className}`}
         >
             <input
                 value={text}
@@ -43,6 +43,7 @@ export default function ChatInput({
                 }}
                 placeholder="Ask AIRIS anything..."
                 className="
+                    min-w-0
                     flex-1
                     rounded-lg
                     border
@@ -62,7 +63,7 @@ export default function ChatInput({
 
             <button
                 disabled={loading}
-                className="border rounded-lg px-6 h-14 disabled:opacity-50"
+                className="shrink-0 border rounded-lg px-6 h-14 disabled:opacity-50"
             >
                 {loading ? "Thinking..." : "Send"}
             </button>

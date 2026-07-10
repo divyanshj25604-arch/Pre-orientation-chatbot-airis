@@ -23,7 +23,7 @@ export default function NameModal({ onUserCreated }) {
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black/70">
-            <div className="bg-zinc-900 p-6 rounded-xl w-96">
+            <div className="w-[calc(100%-2rem)] max-w-sm rounded-xl bg-zinc-900 p-6">
                 <h2 className="text-2xl font-bold mb-4">
                     Welcome to AIRIS
                 </h2>

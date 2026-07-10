@@ -37,7 +37,7 @@ export default function ApiKeyModal({
     return (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
 
-            <div className="w-[420px] rounded-xl border border-white/10 bg-[#111] p-6">
+            <div className="w-[calc(100%-2rem)] max-w-[420px] rounded-xl border border-white/10 bg-[#111] p-6">
 
                 <h2 className="text-lg font-semibold">
                     Groq API Key

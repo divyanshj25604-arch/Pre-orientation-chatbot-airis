@@ -5,14 +5,15 @@ export default function MessageBubble({ message }) {
 
   return (
     <div
-      className={`flex ${
+      className={`flex min-w-0 ${
         isUser ? "justify-end" : "justify-start"
       }`}
     >
       <div
         className="
-          inline-block
-          max-w-2xl
+          min-w-0
+          max-w-full
+          md:max-w-2xl
           border
           border-white/20
           rounded-xl
