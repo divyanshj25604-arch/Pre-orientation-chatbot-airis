@@ -14,7 +14,7 @@ export default function ResponsiveWorkspace({
   const [activeMobileTab, setActiveMobileTab] = useState("chat");
 
   return (
-    <div className="grid min-h-0 flex-1 grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden md:h-[calc(100vh-64px)] md:flex-none md:grid-cols-[24rem_minmax(0,1fr)] md:grid-rows-[minmax(0,1fr)_auto]">
+    <div className="grid min-h-0 w-full min-w-0 flex-1 grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden md:h-[calc(100vh-64px)] md:flex-none md:grid-cols-[24rem_minmax(0,1fr)] md:grid-rows-[minmax(0,1fr)_auto]">
       <MobileWorkspaceTabs
         activeTab={activeMobileTab}
         onTabChange={setActiveMobileTab}
@@ -34,7 +34,7 @@ export default function ResponsiveWorkspace({
         id="chat-workspace"
         role="tabpanel"
         aria-labelledby="chat-tab"
-        className={`min-h-0 flex-col md:col-start-2 md:row-start-1 md:flex md:pb-0 ${activeMobileTab === "chat" ? "flex" : "hidden"
+        className={`min-h-0 min-w-0 flex-col md:col-start-2 md:row-start-1 md:flex md:pb-0 ${activeMobileTab === "chat" ? "flex" : "hidden"
           }`}
       >
         <ChatWindow
@@ -46,7 +46,7 @@ export default function ResponsiveWorkspace({
       <div
         className={`
           ${activeMobileTab === "chat" ? "block" : "hidden"}
-          min-h-0 md:contents
+          min-h-0 min-w-0 md:contents
         `}
       >
         <ChatInput

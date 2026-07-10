@@ -86,7 +86,7 @@ export default function PromptPanel({
   return (
     <div
       {...props}
-      className={`w-full p-4 md:w-96 md:h-full md:flex md:flex-col md:border-r md:border-white ${className}`}
+      className={`w-full min-w-0 p-4 md:w-96 md:h-full md:flex md:flex-col md:border-r md:border-white ${className}`}
     >
       <div className="grid grid-cols-2 gap-2 md:min-h-0 md:flex-1 md:overflow-y-auto md:gap-3">
         {personas.map((persona) => (

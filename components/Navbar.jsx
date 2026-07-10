@@ -7,13 +7,13 @@ export default function Navbar() {
     const [showApiModal, setShowApiModal] = useState(false);
     return (
         <>
-            <div className="flex h-16 shrink-0 items-center justify-between border-b border-white px-6">
+            <div className="flex h-16 w-full min-w-0 shrink-0 items-center justify-between border-b border-white px-4 md:px-6">
 
-                <h1 className="text-lg font-semibold">
+                <h1 className="min-w-0 truncate text-lg font-semibold">
                     AIRIS Prompt Lab
                 </h1>
 
-                <div className="flex items-center gap-8">
+                <div className="flex min-w-0 items-center gap-3 md:gap-8">
                     <button
                         className="text-xs border border-white/20 rounded-md px-2.5 py-1 hover:bg-white/5 transition"
                         onClick={() => setShowApiModal(true)}
@@ -21,8 +21,8 @@ export default function Navbar() {
                         API Key
                     </button>
 
-                    <div className="text-right">
-                        <p className="font-medium">{user?.name}</p>
+                    <div className="min-w-0 text-right">
+                        <p className="truncate font-medium">{user?.name}</p>
                         <p className="text-xs text-neutral-400">
                             NST Student
                         </p>
