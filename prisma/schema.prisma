@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,20 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum ConversationStatus {
-  ACTIVE
-  ARCHIVED
-}
-
 model User {
-  id Int @id @default(autoincrement())
-
-  uuid String @unique
-
-  name String
-
-  createdAt DateTime @default(now())
-
+  id            Int            @id @default(autoincrement())
+  uuid          String         @unique
+  name          String
+  createdAt     DateTime       @default(now())
   conversations Conversation[]
 }
 
@@ -34,37 +20,38 @@ model Conversation {
   systemPrompt String
   status       ConversationStatus @default(ACTIVE)
   createdAt    DateTime           @default(now())
-
-  userId Int
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  messages    Message[]
-  chatMetrics ChatMetric[]
-}
-
-enum MessageRole {
-  USER
-  ASSISTANT
+  userId       Int
+  chatMetrics  ChatMetric[]
+  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages     Message[]
 }
 
 model Message {
-  id        Int         @id @default(autoincrement())
-  role      MessageRole
-  content   String
-  createdAt DateTime    @default(now())
-
+  id             Int          @id @default(autoincrement())
+  role           MessageRole
+  content        String
+  createdAt      DateTime     @default(now())
   conversationId Int
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 }
 
 model ChatMetric {
-  id               Int      @id @default(autoincrement())
+  id               Int          @id @default(autoincrement())
   responseTimeMs   Int
   promptTokens     Int?
   completionTokens Int?
   totalTokens      Int?
-  createdAt        DateTime @default(now())
+  createdAt        DateTime     @default(now())
+  conversationId   Int
+  conversation     Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+}
 
-  conversationId Int
-  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+enum ConversationStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
 }

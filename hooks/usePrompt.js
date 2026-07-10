@@ -31,6 +31,11 @@ export function usePrompt() {
             );
 
             setPrompt(data.systemPrompt ?? "");
+
+            localStorage.setItem(
+                "systemPrompt",
+                data.systemPrompt ?? ""
+            );
         } catch (err) {
             console.error(err);
         }
@@ -45,6 +50,8 @@ export function usePrompt() {
             setSaveState("saving");
 
             await savePrompt(conversationId, prompt);
+
+            localStorage.setItem("systemPrompt", prompt);
 
             setSaveState("saved");
 
@@ -67,5 +74,6 @@ export function usePrompt() {
         saveState,
         setSaveState,
         saving,
+        hasPrompt: prompt.trim().length > 0,
     };
 }

@@ -4,7 +4,7 @@ import NameModal from "@/components/NameModal";
 import Navbar from "@/components/Navbar";
 import ResponsiveWorkspace from "@/components/ResponsiveWorkspace";
 import { useChat } from "@/hooks/useChat";
-
+import { PromptProvider } from "@/contexts/PromptContext";
 import { useUser } from "@/hooks/useUser";
 
 export default function Home() {
@@ -34,7 +34,7 @@ export default function Home() {
 
   return (
 
-    <>
+    <PromptProvider>
 
       <Navbar />
 
@@ -44,7 +44,7 @@ export default function Home() {
         onSend={send}
       />
 
-    </>
+    </PromptProvider>
 
   );
 }

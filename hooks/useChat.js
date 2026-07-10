@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { sendMessage } from "@/services/chatService";
 import { getMessages } from "@/services/messageService";
+import { toast } from "sonner";
 
 export function useChat() {
     const [messages, setMessages] = useState([]);
@@ -39,6 +40,14 @@ export function useChat() {
 
     async function send(text) {
         setLoading(true);
+
+        const systemPrompt = localStorage.getItem("systemPrompt")?.trim();
+
+        if (!systemPrompt) {
+            toast.error("Please save a system prompt first.");
+            setLoading(false);
+            return;
+        }
 
         const conversationId = Number(
             localStorage.getItem("conversationId")

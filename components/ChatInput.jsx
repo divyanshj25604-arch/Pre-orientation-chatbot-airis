@@ -7,6 +7,7 @@ import { toast } from "sonner";
 export default function ChatInput({
     onSend,
     loading,
+    hasPrompt,
     className = "",
 }) {
     const [text, setText] = useState("");
@@ -41,7 +42,12 @@ export default function ChatInput({
                         e.preventDefault();
                     }
                 }}
-                placeholder="Ask AIRIS anything..."
+                disabled={!hasPrompt || loading}
+                placeholder={
+                    hasPrompt
+                        ? "Ask AIRIS anything..."
+                        : "Save a system prompt first..."
+                }
                 className="
                     min-w-0
                     flex-1
@@ -62,7 +68,7 @@ export default function ChatInput({
             />
 
             <button
-                disabled={loading}
+                disabled={!hasPrompt || loading}
                 className="shrink-0 border rounded-lg px-6 h-14 disabled:opacity-50"
             >
                 {loading ? "Thinking..." : "Send"}

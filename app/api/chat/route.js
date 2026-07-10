@@ -22,6 +22,17 @@ export async function POST(request) {
             );
         }
 
+        if (!conversation.systemPrompt?.trim()) {
+            return NextResponse.json(
+                {
+                    error: "Please save a system prompt before chatting.",
+                },
+                {
+                    status: 400,
+                }
+            );
+        }
+
         // Save user's message
         await prisma.message.create({
             data: {

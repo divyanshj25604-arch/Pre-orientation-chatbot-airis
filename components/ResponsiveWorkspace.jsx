@@ -5,6 +5,7 @@ import ChatInput from "@/components/ChatInput";
 import ChatWindow from "@/components/ChatWindow";
 import MobileWorkspaceTabs from "@/components/MobileWorkspaceTabs";
 import PromptPanel from "@/components/PromptPanel";
+import { usePromptContext } from "@/contexts/PromptContext";
 
 export default function ResponsiveWorkspace({
   messages,
@@ -12,6 +13,7 @@ export default function ResponsiveWorkspace({
   onSend,
 }) {
   const [activeMobileTab, setActiveMobileTab] = useState("chat");
+  const { hasPrompt } = usePromptContext();
 
   return (
     <div className="grid min-h-0 w-full min-w-0 flex-1 grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden md:h-[calc(100vh-64px)] md:flex-none md:grid-cols-[24rem_minmax(0,1fr)] md:grid-rows-[minmax(0,1fr)_auto]">
@@ -52,6 +54,7 @@ export default function ResponsiveWorkspace({
         <ChatInput
           onSend={onSend}
           loading={chatLoading}
+          hasPrompt={hasPrompt}
           className="bg-background pb-[env(safe-area-inset-bottom)] md:pb-4"
         />
       </div>

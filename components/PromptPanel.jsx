@@ -1,7 +1,7 @@
 "use client";
 
 import PersonaCard from "./PersonaCard";
-import { usePrompt } from "@/hooks/usePrompt";
+import { usePromptContext } from "@/contexts/PromptContext";
 import { useAutoResizeTextarea } from "@/hooks/useAutoResizeTextarea";
 import { useEffect, useState } from "react";
 import { AUTO_SAVE_DELAY } from "@/utils/constants";
@@ -48,7 +48,8 @@ export default function PromptPanel({
     saveState,
     setSaveState,
     saving,
-  } = usePrompt();
+    hasPrompt,
+  } = usePromptContext();
   const [isMobile, setIsMobile] = useState(false);
   const textareaRef = useAutoResizeTextarea({
     value: prompt,
@@ -86,7 +87,7 @@ export default function PromptPanel({
   return (
     <div
       {...props}
-      className={`w-full min-w-0 p-4 md:w-96 md:h-full md:flex md:flex-col md:border-r md:border-white ${className}`}
+      className={`w-full min-w-0 p-4 flex flex-col md:w-[22rem] md:h-full md:border-r md:border-white ${className}`}
     >
       <div className="grid grid-cols-2 gap-2 md:min-h-0 md:flex-1 md:overflow-y-auto md:gap-3">
         {personas.map((persona) => (
@@ -102,7 +103,7 @@ export default function PromptPanel({
         ))}
       </div>
 
-      <div className="mt-3 flex flex-col gap-3 md:shrink-0">
+      <div className="mt-3 flex flex-col gap-3 md:flex-1 md:min-h-0">
         <div className="flex justify-between items-center">
           <span className="text-sm font-medium">System Prompt</span>
           <span className="text-xs text-neutral-400">
@@ -114,7 +115,22 @@ export default function PromptPanel({
 
         <textarea
           ref={textareaRef}
-          className="min-h-32 max-h-[50dvh] resize-none overflow-y-auto rounded-lg border bg-transparent p-3 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 md:h-96 md:max-h-none"
+          className="
+            min-h-32
+            resize-none
+            overflow-y-auto
+            rounded-lg
+            border
+            bg-transparent
+            p-3
+            focus:outline-none
+            focus:ring-0
+            focus-visible:outline-none
+            focus-visible:ring-0
+            md:min-h-[140px]
+            md:flex-1
+            md:max-h-none
+          "
           value={prompt}
           onChange={(e) => {
             setPrompt(e.target.value);
