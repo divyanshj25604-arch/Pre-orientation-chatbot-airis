@@ -4,8 +4,8 @@ import PersonaCard from "./PersonaCard";
 import { usePromptContext } from "@/contexts/PromptContext";
 import { useAutoResizeTextarea } from "@/hooks/useAutoResizeTextarea";
 import { useEffect, useState } from "react";
-import { AUTO_SAVE_DELAY } from "@/utils/constants";
-import { isPromptEmpty, isPromptTooLong } from "@/utils/validators";
+import { AUTO_SAVE_DELAY, MAX_PROMPT_LENGTH } from "@/utils/constants";
+import { getPromptValidationError } from "@/utils/validators";
 import { toast } from "sonner";
 
 const personas = [
@@ -75,14 +75,13 @@ export default function PromptPanel({
     if (saveState !== "editing") return;
 
     const timer = setTimeout(() => {
-      if (isPromptEmpty(prompt)) {
-        toast.error("Prompt cannot be empty");
+      const validationError = getPromptValidationError(prompt);
+
+      if (validationError) {
+        toast.error(validationError);
         return;
       }
-      if (isPromptTooLong(prompt)) {
-        toast.error("Prompt exceeds 3000 characters");
-        return;
-      }
+
       save();
     }, AUTO_SAVE_DELAY);
 
@@ -119,6 +118,10 @@ export default function PromptPanel({
           </span>
         </div>
 
+        <div className="text-xs text-neutral-400">
+          {prompt.length}/{MAX_PROMPT_LENGTH} characters
+        </div>
+
         <textarea
           ref={textareaRef}
           className="
@@ -138,6 +141,7 @@ export default function PromptPanel({
             md:max-h-none
           "
           value={prompt}
+          maxLength={MAX_PROMPT_LENGTH}
           onChange={(e) => {
             setPrompt(e.target.value);
             setSaveState("editing");
@@ -147,14 +151,13 @@ export default function PromptPanel({
 
         <button
           onClick={async () => {
-            if (isPromptEmpty(prompt)) {
-              toast.error("Prompt cannot be empty");
+            const validationError = getPromptValidationError(prompt);
+
+            if (validationError) {
+              toast.error(validationError);
               return;
             }
-            if (isPromptTooLong(prompt)) {
-              toast.error("Prompt exceeds 3000 characters");
-              return;
-            }
+
             await save(true);
             onPromptSaved?.();
           }}

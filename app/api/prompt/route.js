@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { MAX_PROMPT_LENGTH } from "@/utils/constants";
 
 export async function POST(request) {
   try {
@@ -8,6 +9,15 @@ export async function POST(request) {
     if (!Number.isInteger(conversationId) || typeof systemPrompt !== "string") {
       return NextResponse.json(
         { error: "A valid conversation and system prompt are required" },
+        { status: 400 }
+      );
+    }
+
+    if (systemPrompt.length > MAX_PROMPT_LENGTH) {
+      return NextResponse.json(
+        {
+          error: `System prompt cannot exceed ${MAX_PROMPT_LENGTH} characters`,
+        },
         { status: 400 }
       );
     }

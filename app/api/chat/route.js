@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import backendSystemPrompt from "@/lib/backendSystemPrompt";
 import prisma from "@/lib/prisma";
 import Groq from "groq-sdk";
+import { MAX_MESSAGE_LENGTH, MAX_PROMPT_LENGTH } from "@/utils/constants";
 
 export async function POST(request) {
     try {
@@ -10,6 +11,22 @@ export async function POST(request) {
             message,
             apiKey,
         } = await request.json();
+
+        if (!Number.isInteger(conversationId) || typeof message !== "string") {
+            return NextResponse.json(
+                { error: "A valid conversation and message are required" },
+                { status: 400 }
+            );
+        }
+
+        if (message.length > MAX_MESSAGE_LENGTH) {
+            return NextResponse.json(
+                {
+                    error: `Message cannot exceed ${MAX_MESSAGE_LENGTH} characters`,
+                },
+                { status: 400 }
+            );
+        }
 
         // Find conversation
         const conversation = await prisma.conversation.findUnique({
@@ -31,6 +48,15 @@ export async function POST(request) {
                 {
                     status: 400,
                 }
+            );
+        }
+
+        if (conversation.systemPrompt.length > MAX_PROMPT_LENGTH) {
+            return NextResponse.json(
+                {
+                    error: `System prompt cannot exceed ${MAX_PROMPT_LENGTH} characters`,
+                },
+                { status: 400 }
             );
         }
 

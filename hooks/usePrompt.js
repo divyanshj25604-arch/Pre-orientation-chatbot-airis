@@ -6,6 +6,7 @@ import {
     savePrompt,
     getPrompt,
 } from "@/services/promptService";
+import { getPromptValidationError } from "@/utils/validators";
 
 export function usePrompt() {
     const [prompt, setPrompt] = useState("");
@@ -45,6 +46,14 @@ export function usePrompt() {
         const conversationId = Number(
             localStorage.getItem("conversationId")
         );
+
+        const validationError = getPromptValidationError(prompt);
+
+        if (validationError) {
+            setSaveState("editing");
+            toast.error(validationError);
+            return;
+        }
 
         try {
             setSaveState("saving");

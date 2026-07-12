@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { isValidMessage } from "@/utils/validators";
+import { MAX_MESSAGE_LENGTH } from "@/utils/constants";
+import { getMessageValidationError } from "@/utils/validators";
 import { toast } from "sonner";
 
 export default function ChatInput({
@@ -17,8 +18,10 @@ export default function ChatInput({
 
         if (loading) return;
 
-        if (!isValidMessage(text)) {
-            toast.error("Invalid message");
+        const validationError = getMessageValidationError(text);
+
+        if (validationError) {
+            toast.error(validationError);
             return;
         }
 
@@ -36,6 +39,7 @@ export default function ChatInput({
         >
             <input
                 value={text}
+                maxLength={MAX_MESSAGE_LENGTH}
                 onChange={(e) => setText(e.target.value)}
                 onKeyDown={(e) => {
                     if (loading && e.key === "Enter") {
