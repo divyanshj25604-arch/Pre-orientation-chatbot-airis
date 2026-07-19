@@ -24,7 +24,8 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-dvh overflow-hidden antialiased`}
     >
       <body className="h-dvh min-h-0 overflow-hidden flex flex-col">
-        {children}
+          <div className="background-layer"></div>
+          {children}
 
         <Toaster
           position="top-right"

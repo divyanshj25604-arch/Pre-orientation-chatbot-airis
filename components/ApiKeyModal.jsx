@@ -17,6 +17,7 @@ export default function ApiKeyModal({
         const savedKey =
             localStorage.getItem("groqApiKey") || "";
 
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setApiKey(savedKey);
 
     }, [open]);

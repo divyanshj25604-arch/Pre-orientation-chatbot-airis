@@ -35,7 +35,7 @@ export default function ChatInput({
     return (
         <form
             onSubmit={handleSubmit}
-            className={`flex w-full min-w-0 shrink-0 gap-3 border-t p-4 ${className}`}
+            className={`flex w-full min-w-0 shrink-0 gap-3 border-t bg-glass border-glow p-4 ${className}`}
         >
             <input
                 value={text}
@@ -53,21 +53,22 @@ export default function ChatInput({
                         : "Save a system prompt first..."
                 }
                 className="
-                    min-w-0
-                    flex-1
-                    rounded-lg
-                    border
-                    border-white
-                    bg-transparent
-                    px-4
-                    py-2
-                    h-14
-                    outline-none
-                    ring-0
-                    focus:ring-0
-                    focus-visible:ring-0
-                    focus:outline-none
-                    focus:border-blue-500
+                  min-w-0
+                  flex-1
+                  rounded-lg
+                  border
+                  border-white
+                  bg-glass
+                  font-mono
+                  px-4
+                  py-2
+                  h-14
+                  outline-none
+                  ring-0
+                  focus:ring-0
+                  focus-visible:ring-0
+                  focus:outline-none
+                  focus:border-blue-500
                 "
             />
 
