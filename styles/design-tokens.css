@@ -102,3 +102,89 @@
   box-shadow: inset 0 0 16px rgba(196, 181, 253, 0.24), 0 0 18px rgba(139, 92, 246, 0.28);
   transform: translateY(-1px);
 }
+
+.empty-state-core {
+  opacity: 0.86;
+  filter: drop-shadow(0 0 32px rgba(139, 92, 246, 0.12));
+}
+
+.empty-state-ring,
+.empty-state-sweep {
+  position: absolute;
+  inset: 50%;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+}
+
+.empty-state-ring {
+  border: 1px solid rgba(196, 181, 253, 0.2);
+}
+
+.empty-state-ring--outer {
+  width: 100%;
+  height: 100%;
+  border-style: dashed;
+  animation: empty-orbit 30s linear infinite;
+}
+
+.empty-state-ring--middle {
+  width: 72%;
+  height: 72%;
+  border-color: rgba(139, 92, 246, 0.27);
+  animation: empty-orbit-reverse 18s linear infinite;
+}
+
+.empty-state-ring--inner {
+  width: 48%;
+  height: 48%;
+  border-color: rgba(255, 255, 255, 0.13);
+  box-shadow: 0 0 0 18px rgba(139, 92, 246, 0.025), 0 0 42px rgba(139, 92, 246, 0.09);
+  animation: empty-breathe 4.5s ease-in-out infinite;
+}
+
+.empty-state-sweep {
+  width: 104%;
+  height: 104%;
+  background: conic-gradient(from 0deg, transparent 0deg 305deg, rgba(196, 181, 253, 0.6) 335deg, transparent 360deg);
+  -webkit-mask: radial-gradient(transparent 67%, #000 68% 69%, transparent 70%);
+  mask: radial-gradient(transparent 67%, #000 68% 69%, transparent 70%);
+  animation: empty-orbit 8s linear infinite;
+}
+
+.empty-state-node {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-bright);
+  box-shadow: 0 0 14px rgba(139, 92, 246, 0.8);
+  animation: empty-node 2.6s ease-in-out infinite;
+}
+
+.empty-state-node--one { top: 10%; left: 22%; }
+.empty-state-node--two { right: 13%; bottom: 27%; animation-delay: 0.8s; }
+.empty-state-node--three { bottom: 13%; left: 35%; animation-delay: 1.6s; }
+
+@keyframes empty-orbit {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes empty-orbit-reverse {
+  to { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+
+@keyframes empty-breathe {
+  50% { transform: translate(-50%, -50%) scale(1.06); opacity: 0.55; }
+}
+
+@keyframes empty-node {
+  50% { transform: scale(1.8); opacity: 0.45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .empty-state-ring,
+  .empty-state-sweep,
+  .empty-state-node {
+    animation: none;
+  }
+}
