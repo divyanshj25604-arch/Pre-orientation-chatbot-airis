@@ -177,7 +177,7 @@ export default function PromptPanel({
   return (
     <div
       {...props}
-      className={`relative block w-full min-w-0 overflow-hidden rounded-xl border border-[var(--hud-border)] bg-[#080916]/72 p-4 shadow-[0_0_24px_rgba(15,15,30,0.35)] backdrop-blur-sm md:grid md:h-full md:w-[22rem] md:grid-rows-[minmax(0,46%)_minmax(0,1fr)] md:gap-3 md:border-r md:rounded-none ${className}`}
+      className={`relative block w-full min-w-0 overflow-hidden rounded-xl border border-[var(--hud-border)] bg-[#121214]/72 p-4 backdrop-blur-sm md:grid md:h-full md:w-[22rem] md:grid-rows-[minmax(0,46%)_minmax(0,1fr)] md:gap-3 md:border-r md:rounded-none ${className}`}
     >
       <div className="grid min-h-0 grid-cols-2 gap-2 md:grid-rows-3 md:gap-3">
         {personas.map((persona) => (
@@ -185,6 +185,7 @@ export default function PromptPanel({
             key={persona.title}
             title={persona.title}
             prompt={persona.prompt}
+            selected={prompt === persona.prompt}
             onSelect={(newPrompt) => {
               setPrompt(newPrompt);
               setSaveState("editing");
@@ -196,14 +197,14 @@ export default function PromptPanel({
       <div className="mt-3 flex min-h-0 flex-col gap-3 md:mt-0">
         <div className="flex justify-between items-center">
           <span className="hud-label">System Prompt</span>
-          <span className="text-xs text-violet-200/65">
+          <span className="text-xs text-zinc-400">
             {saveState === "editing" && "Editing..."}
             {saveState === "saving" && "Saving..."}
             {saveState === "saved" && "✓ Saved"}
           </span>
         </div>
 
-        <div className="text-xs font-medium text-violet-200/60">
+        <div className="text-xs font-medium text-zinc-500">
           {prompt.length}/{MAX_PROMPT_LENGTH} characters
         </div>
 
@@ -217,10 +218,10 @@ export default function PromptPanel({
             overscroll-contain
             rounded-md
             border border-[var(--hud-border)]
-            bg-[#070812]/75
+            bg-[#101012]/75
             p-3
-            text-violet-50 placeholder:text-violet-100/35
-            shadow-[inset_0_0_22px_rgba(0,0,0,.3)]
+            text-zinc-100 placeholder:text-zinc-500
+            shadow-[inset_0_0_18px_rgba(0,0,0,.22)]
             transition-colors duration-200
             focus:outline-none
             focus:ring-0

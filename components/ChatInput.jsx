@@ -35,7 +35,7 @@ export default function ChatInput({
     return (
         <form
             onSubmit={handleSubmit}
-            className={`flex w-full min-w-0 shrink-0 gap-3 border-t border-[var(--hud-border)] bg-[#080916]/90 p-4 shadow-[0_-10px_30px_rgba(0,0,0,.22)] backdrop-blur-xl ${className}`}
+            className={`flex w-full min-w-0 shrink-0 gap-3 border-t border-[var(--hud-border)] bg-[#121214]/90 p-4 shadow-[0_-10px_30px_rgba(0,0,0,.18)] backdrop-blur-xl ${className}`}
         >
             <input
                 value={text}
@@ -57,7 +57,7 @@ export default function ChatInput({
                   flex-1
                   rounded-md
                   border border-[var(--hud-border)]
-                  bg-[#060711]/90
+                  bg-[#101012]/90
                   font-mono
                   px-4
                   py-2
@@ -67,7 +67,7 @@ export default function ChatInput({
                   focus:ring-0
                   focus-visible:ring-0
                   focus:outline-none
-                  text-violet-50 placeholder:text-violet-100/35
+                  text-zinc-100 placeholder:text-zinc-500
                   focus:border-[var(--accent-bright)]
                   focus:shadow-[0_0_14px_rgba(139,92,246,.2)]
                 "

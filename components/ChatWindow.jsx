@@ -29,8 +29,8 @@ export default function ChatWindow({
 
     return (
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-            <div className="flex shrink-0 items-center justify-between border-b border-[var(--hud-line)] bg-[#080916]/50 px-4 py-2 md:px-6">
-                <span className="hud-label"><span className="mr-2 inline-block size-1.5 rounded-full bg-violet-300 shadow-[0_0_8px_#8b5cf6]" />AIRIS sync status: active</span>
+            <div className="flex shrink-0 items-center justify-between border-b border-[var(--hud-line)] bg-[#121214]/50 px-4 py-2 md:px-6">
+                <span className="hud-label"><span className="mr-2 inline-block size-1.5 rounded-full bg-[var(--accent-primary)]" />AIRIS sync status: active</span>
                 <button
                     type="button"
                     onClick={() => setShowClearConfirmation(true)}

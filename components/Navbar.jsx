@@ -7,7 +7,7 @@ export default function Navbar() {
     const [showApiModal, setShowApiModal] = useState(false);
     return (
         <>
-            <header className="relative flex h-16 w-full min-w-0 shrink-0 items-center justify-between border-b border-[var(--hud-border)] bg-[#090a17]/90 px-4 shadow-[0_6px_24px_rgba(0,0,0,.32)] backdrop-blur-xl md:px-6">
+            <header className="relative flex h-16 w-full min-w-0 shrink-0 items-center justify-between border-b border-[var(--hud-border)] bg-[#121214]/90 px-4 shadow-[0_6px_24px_rgba(0,0,0,.22)] backdrop-blur-xl md:px-6">
 
                 <h1 className="min-w-0 truncate font-mono text-lg font-semibold tracking-tight text-[var(--accent-bright)] drop-shadow-[0_0_9px_rgba(139,92,246,.65)]">
                     AIRIS Prompt Lab
@@ -22,8 +22,8 @@ export default function Navbar() {
                     </button>
 
                     <div className="min-w-0 border-l border-[var(--hud-line)] pl-3 text-right">
-                        <p className="truncate font-medium text-violet-50">{user?.name}</p>
-                        <p className="text-xs text-violet-200/55">
+                        <p className="truncate font-medium text-zinc-100">{user?.name}</p>
+                        <p className="text-xs text-zinc-500">
                             NST Student
                         </p>
                     </div>
