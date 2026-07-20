@@ -30,7 +30,7 @@ export default function ResponsiveWorkspace({
         aria-labelledby="prompt-tab"
         onPersonaSelect={() => setActiveMobileTab("chat")}
         onPromptSaved={() => setActiveMobileTab("chat")}
-        className={`min-h-0 w-full overflow-y-auto overscroll-contain border-r-0 md:col-start-1 md:row-span-2 md:flex md:w-full md:border-r md:pb-4 ${activeMobileTab === "prompt" ? "block" : "hidden"
+        className={`min-h-0 w-full overflow-y-auto overscroll-contain border-r-0 md:col-start-1 md:row-span-2 md:w-full md:border-r md:pb-4 ${activeMobileTab === "prompt" ? "block" : "hidden"
           }`}
       />
 

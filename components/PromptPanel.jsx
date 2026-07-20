@@ -177,10 +177,9 @@ export default function PromptPanel({
   return (
     <div
       {...props}
-      className={`relative w-full min-w-0 overflow-hidden rounded-xl border border-[var(--hud-border)] bg-[#080916]/72 p-4 shadow-[0_0_24px_rgba(15,15,30,0.35)] backdrop-blur-sm md:h-full md:w-[22rem] md:border-r md:rounded-none ${className}`}
+      className={`relative block w-full min-w-0 overflow-hidden rounded-xl border border-[var(--hud-border)] bg-[#080916]/72 p-4 shadow-[0_0_24px_rgba(15,15,30,0.35)] backdrop-blur-sm md:grid md:h-full md:w-[22rem] md:grid-rows-[minmax(0,46%)_minmax(0,1fr)] md:gap-3 md:border-r md:rounded-none ${className}`}
     >
-      <div className="hud-label mb-3 flex items-center gap-2"><span className="size-1.5 rounded-full bg-violet-300 shadow-[0_0_9px_#8b5cf6]" /> Persona matrix</div>
-      <div className="grid grid-cols-2 gap-2 md:max-h-[42%] md:flex-none md:overflow-y-auto md:gap-3">
+      <div className="grid min-h-0 grid-cols-2 gap-2 md:grid-rows-3 md:gap-3">
         {personas.map((persona) => (
           <PersonaCard
             key={persona.title}
@@ -194,7 +193,7 @@ export default function PromptPanel({
         ))}
       </div>
 
-      <div className="mt-3 flex min-h-0 flex-col gap-3 md:flex-1">
+      <div className="mt-3 flex min-h-0 flex-col gap-3 md:mt-0">
         <div className="flex justify-between items-center">
           <span className="hud-label">System Prompt</span>
           <span className="text-xs text-violet-200/65">
@@ -212,8 +211,10 @@ export default function PromptPanel({
           ref={textareaRef}
           className="
             min-h-32
+            max-h-64
             resize-none
             overflow-y-auto
+            overscroll-contain
             rounded-md
             border border-[var(--hud-border)]
             bg-[#070812]/75
