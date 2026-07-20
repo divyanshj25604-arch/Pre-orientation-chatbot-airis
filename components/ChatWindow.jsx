@@ -29,12 +29,13 @@ export default function ChatWindow({
 
     return (
         <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-            <div className="flex shrink-0 justify-end border-b border-white/10 px-4 py-2 md:px-6">
+            <div className="flex shrink-0 items-center justify-between border-b border-[var(--hud-line)] bg-[#121214]/50 px-4 py-2 md:px-6">
+                <span className="hud-label"><span className="mr-2 inline-block size-1.5 rounded-full bg-[var(--accent-primary)]" />AIRIS sync status: active</span>
                 <button
                     type="button"
                     onClick={() => setShowClearConfirmation(true)}
                     disabled={messages.length === 0 || loading || clearing}
-                    className="text-xs text-neutral-400 transition hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                    className="hud-button rounded-md px-2.5 py-1 text-xs disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     Clear Chat
                 </button>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
     savePrompt,
@@ -15,11 +15,7 @@ export function usePrompt() {
 
     const saving = saveState === "saving";
 
-    useEffect(() => {
-        loadPrompt();
-    }, []);
-
-    async function loadPrompt() {
+    const loadPrompt = useCallback(async () => {
         const conversationId = Number(
             localStorage.getItem("conversationId")
         );
@@ -40,9 +36,17 @@ export function usePrompt() {
         } catch (err) {
             console.error(err);
         }
-    }
+    }, []);
 
-    async function save(showToast = false) {
+    useEffect(() => {
+        const timer = window.setTimeout(() => {
+            void loadPrompt();
+        }, 0);
+
+        return () => window.clearTimeout(timer);
+    }, [loadPrompt]);
+
+    const save = useCallback(async (showToast = false) => {
         const conversationId = Number(
             localStorage.getItem("conversationId")
         );
@@ -74,7 +78,7 @@ export function usePrompt() {
 
             toast.error("Failed to save prompt");
         }
-    }
+    }, [prompt]);
 
     return {
         prompt,

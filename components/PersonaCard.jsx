@@ -2,13 +2,15 @@ export default function PersonaCard({
   title,
   prompt,
   onSelect,
+  selected = false,
 }) {
+
   return (
       <button
         onClick={() => onSelect(prompt)}
-        className="min-w-0 border rounded-lg p-4 text-left hover:bg-neutral-900 transition bg-glass card-glow"
+        className={`hud-panel group min-h-24 min-w-0 overflow-hidden rounded-md p-3 text-left hover:-translate-y-0.5 md:min-h-0 md:p-3 ${selected ? "persona-card--selected" : ""}`}
       >
-        <h3 className="font-semibold">{title}</h3>
+        <h3 className="font-semibold leading-tight text-zinc-100">{title}</h3>
       </button>
   );
 }

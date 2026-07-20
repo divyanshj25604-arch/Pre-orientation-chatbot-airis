@@ -7,30 +7,30 @@ export default function Navbar() {
     const [showApiModal, setShowApiModal] = useState(false);
     return (
         <>
-            <div className="flex h-16 w-full min-w-0 shrink-0 items-center justify-between border-b border-white px-4 md:px-6 bg-glass border-glow">
+            <header className="relative flex h-16 w-full min-w-0 shrink-0 items-center justify-between border-b border-[var(--hud-border)] bg-[#121214]/90 px-4 shadow-[0_6px_24px_rgba(0,0,0,.22)] backdrop-blur-xl md:px-6">
 
-                <h1 className="min-w-0 truncate text-lg font-semibold text-white">
+                <h1 className="min-w-0 truncate font-mono text-lg font-semibold tracking-tight text-[var(--accent-bright)] drop-shadow-[0_0_9px_rgba(139,92,246,.65)]">
                     AIRIS Prompt Lab
                 </h1>
 
                 <div className="flex min-w-0 items-center gap-3 md:gap-8">
                     <button
-                        className="text-xs border border-white/20 rounded-md px-2.5 py-1 hover:bg-white/5 transition"
+                        className="hud-button rounded-md px-3 py-1.5 text-xs font-medium"
                         onClick={() => setShowApiModal(true)}
                     >
                         API Key
                     </button>
 
-                    <div className="min-w-0 text-right">
-                        <p className="truncate font-medium">{user?.name}</p>
-                        <p className="text-xs text-neutral-400">
+                    <div className="min-w-0 border-l border-[var(--hud-line)] pl-3 text-right">
+                        <p className="truncate font-medium text-zinc-100">{user?.name}</p>
+                        <p className="text-xs text-zinc-500">
                             NST Student
                         </p>
                     </div>
 
                 </div>
 
-            </div>
+            </header>
 
             <ApiKeyModal
                 open={showApiModal}

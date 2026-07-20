@@ -168,23 +168,24 @@ export default function PromptPanel({
         return;
       }
 
-      save();
+      void save();
     }, AUTO_SAVE_DELAY);
 
     return () => clearTimeout(timer);
-  }, [prompt, saveState]);
+  }, [prompt, saveState, save]);
 
   return (
     <div
       {...props}
-      className={`w-full min-w-0 p-4 flex flex-col md:w-[22rem] md:h-full md:border-r md:border-white ${className}`}
+      className={`relative block w-full min-w-0 overflow-hidden rounded-xl border border-[var(--hud-border)] bg-[#121214]/72 p-4 backdrop-blur-sm md:grid md:h-full md:w-[22rem] md:grid-rows-[minmax(0,46%)_minmax(0,1fr)] md:gap-3 md:border-r md:rounded-none ${className}`}
     >
-      <div className="grid grid-cols-2 gap-2 md:min-h-0 md:flex-1 md:overflow-y-auto md:gap-3">
+      <div className="grid min-h-0 grid-cols-2 gap-2 md:grid-rows-3 md:gap-3">
         {personas.map((persona) => (
           <PersonaCard
             key={persona.title}
             title={persona.title}
             prompt={persona.prompt}
+            selected={prompt === persona.prompt}
             onSelect={(newPrompt) => {
               setPrompt(newPrompt);
               setSaveState("editing");
@@ -193,17 +194,17 @@ export default function PromptPanel({
         ))}
       </div>
 
-      <div className="mt-3 flex flex-col gap-3 md:flex-1 md:min-h-0">
+      <div className="mt-3 flex min-h-0 flex-col gap-3 md:mt-0">
         <div className="flex justify-between items-center">
-          <span className="text-sm font-medium">System Prompt</span>
-          <span className="text-xs text-neutral-400">
+          <span className="hud-label">System Prompt</span>
+          <span className="text-xs text-zinc-400">
             {saveState === "editing" && "Editing..."}
             {saveState === "saving" && "Saving..."}
             {saveState === "saved" && "✓ Saved"}
           </span>
         </div>
 
-        <div className="text-xs text-neutral-400">
+        <div className="text-xs font-medium text-zinc-500">
           {prompt.length}/{MAX_PROMPT_LENGTH} characters
         </div>
 
@@ -211,12 +212,17 @@ export default function PromptPanel({
           ref={textareaRef}
           className="
             min-h-32
+            max-h-64
             resize-none
             overflow-y-auto
-            rounded-lg
-            border
-            bg-transparent
+            overscroll-contain
+            rounded-md
+            border border-[var(--hud-border)]
+            bg-[#101012]/75
             p-3
+            text-zinc-100 placeholder:text-zinc-500
+            shadow-[inset_0_0_18px_rgba(0,0,0,.22)]
+            transition-colors duration-200
             focus:outline-none
             focus:ring-0
             focus-visible:outline-none
@@ -247,7 +253,7 @@ export default function PromptPanel({
             onPromptSaved?.();
           }}
           disabled={saving}
-          className="border rounded-lg p-3 disabled:opacity-50"
+          className="hud-button rounded-md p-3 font-medium disabled:opacity-50"
         >
           {saving ? "Saving..." : "Save Prompt"}
         </button>

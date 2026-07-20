@@ -35,7 +35,7 @@ export default function ChatInput({
     return (
         <form
             onSubmit={handleSubmit}
-            className={`flex w-full min-w-0 shrink-0 gap-3 border-t bg-glass border-glow p-4 ${className}`}
+            className={`flex w-full min-w-0 shrink-0 gap-3 border-t border-[var(--hud-border)] bg-[#121214]/90 p-4 shadow-[0_-10px_30px_rgba(0,0,0,.18)] backdrop-blur-xl ${className}`}
         >
             <input
                 value={text}
@@ -55,10 +55,9 @@ export default function ChatInput({
                 className="
                   min-w-0
                   flex-1
-                  rounded-lg
-                  border
-                  border-white
-                  bg-glass
+                  rounded-md
+                  border border-[var(--hud-border)]
+                  bg-[#101012]/90
                   font-mono
                   px-4
                   py-2
@@ -68,13 +67,15 @@ export default function ChatInput({
                   focus:ring-0
                   focus-visible:ring-0
                   focus:outline-none
-                  focus:border-blue-500
+                  text-zinc-100 placeholder:text-zinc-500
+                  focus:border-[var(--accent-bright)]
+                  focus:shadow-[0_0_14px_rgba(139,92,246,.2)]
                 "
             />
 
             <button
                 disabled={!hasPrompt || loading}
-                className="shrink-0 border rounded-lg px-6 h-14 disabled:opacity-50"
+                className="hud-button h-14 shrink-0 rounded-md px-6 disabled:opacity-50"
             >
                 {loading ? "Thinking..." : "Send"}
             </button>
