@@ -168,18 +168,19 @@ export default function PromptPanel({
         return;
       }
 
-      save();
+      void save();
     }, AUTO_SAVE_DELAY);
 
     return () => clearTimeout(timer);
-  }, [prompt, saveState]);
+  }, [prompt, saveState, save]);
 
   return (
     <div
       {...props}
-      className={`w-full min-w-0 p-4 flex flex-col md:w-[22rem] md:h-full md:border-r md:border-white ${className}`}
+      className={`relative w-full min-w-0 overflow-hidden rounded-xl border border-[var(--hud-border)] bg-[#080916]/72 p-4 shadow-[0_0_24px_rgba(15,15,30,0.35)] backdrop-blur-sm md:h-full md:w-[22rem] md:border-r md:rounded-none ${className}`}
     >
-      <div className="grid grid-cols-2 gap-2 md:min-h-0 md:flex-1 md:overflow-y-auto md:gap-3">
+      <div className="hud-label mb-3 flex items-center gap-2"><span className="size-1.5 rounded-full bg-violet-300 shadow-[0_0_9px_#8b5cf6]" /> Persona matrix</div>
+      <div className="grid grid-cols-2 gap-2 md:max-h-[42%] md:flex-none md:overflow-y-auto md:gap-3">
         {personas.map((persona) => (
           <PersonaCard
             key={persona.title}
@@ -193,17 +194,17 @@ export default function PromptPanel({
         ))}
       </div>
 
-      <div className="mt-3 flex flex-col gap-3 md:flex-1 md:min-h-0">
+      <div className="mt-3 flex min-h-0 flex-col gap-3 md:flex-1">
         <div className="flex justify-between items-center">
-          <span className="text-sm font-medium">System Prompt</span>
-          <span className="text-xs text-neutral-400">
+          <span className="hud-label">System Prompt</span>
+          <span className="text-xs text-violet-200/65">
             {saveState === "editing" && "Editing..."}
             {saveState === "saving" && "Saving..."}
             {saveState === "saved" && "✓ Saved"}
           </span>
         </div>
 
-        <div className="text-xs text-neutral-400">
+        <div className="text-xs font-medium text-violet-200/60">
           {prompt.length}/{MAX_PROMPT_LENGTH} characters
         </div>
 
@@ -213,10 +214,13 @@ export default function PromptPanel({
             min-h-32
             resize-none
             overflow-y-auto
-            rounded-lg
-            border
-            bg-transparent
+            rounded-md
+            border border-[var(--hud-border)]
+            bg-[#070812]/75
             p-3
+            text-violet-50 placeholder:text-violet-100/35
+            shadow-[inset_0_0_22px_rgba(0,0,0,.3)]
+            transition-colors duration-200
             focus:outline-none
             focus:ring-0
             focus-visible:outline-none
@@ -247,7 +251,7 @@ export default function PromptPanel({
             onPromptSaved?.();
           }}
           disabled={saving}
-          className="border rounded-lg p-3 disabled:opacity-50"
+          className="hud-button rounded-md p-3 font-medium disabled:opacity-50"
         >
           {saving ? "Saving..." : "Save Prompt"}
         </button>

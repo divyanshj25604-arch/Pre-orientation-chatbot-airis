@@ -1,16 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function useUser() {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        loadUser();
-    }, []);
-
-    async function loadUser() {
+    const loadUser = useCallback(async () => {
         const uuid = localStorage.getItem("uuid");
 
         if (!uuid) {
@@ -35,7 +31,15 @@ export function useUser() {
         }
 
         setLoading(false);
-    }
+    }, []);
+
+    useEffect(() => {
+        const timer = window.setTimeout(() => {
+            void loadUser();
+        }, 0);
+
+        return () => window.clearTimeout(timer);
+    }, [loadUser]);
 
     async function createUser(name) {
         // Create User

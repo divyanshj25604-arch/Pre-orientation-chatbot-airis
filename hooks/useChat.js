@@ -37,7 +37,11 @@ export function useChat() {
     }, []);
 
     useEffect(() => {
-        loadMessages();
+        const timer = window.setTimeout(() => {
+            void loadMessages();
+        }, 0);
+
+        return () => window.clearTimeout(timer);
     }, [loadMessages]);
 
     async function send(text) {
